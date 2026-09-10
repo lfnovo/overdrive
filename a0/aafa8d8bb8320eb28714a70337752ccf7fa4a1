@@ -1,0 +1,217 @@
+.env.example
+  s_fd4be8e4695580::t_7b0dbbcc960e49 1-12
+README.md
+  s_fd4be8e4695580::t_4fa63e6f94a3e6 1-56
+docs/README.md
+  s_fd4be8e4695580::t_9e18dac4b3d408 1-16
+docs/avaliacao-tecnica.md
+  s_fd4be8e4695580::t_ddaa43717460fd 1-147
+docs/desenvolvimento.md
+  s_fd4be8e4695580::t_99927e982230ca 1-125
+docs/interface.md
+  s_fd4be8e4695580::t_67227e32b33693 1-75
+docs/mockups/README.md
+  s_fd4be8e4695580::t_51335baf9394e5 1-15
+docs/mockups/character/after-hours.html
+  s_fd4be8e4695580::t_8450d436f258f0 1-11
+docs/mockups/character/build.py
+  s_fd4be8e4695580::t_aaa9ef12031d96 1-38
+docs/mockups/character/pitlane.html
+  s_fd4be8e4695580::t_a128b1f370624d 1-11
+docs/mockups/character/studio.html
+  s_fd4be8e4695580::t_88ac904f4cf3f2 1-11
+docs/mockups/character/style.css
+  s_fd4be8e4695580::t_7011aba4983cb8 1-10
+docs/mockups/ergonomics/README.md
+  s_fd4be8e4695580::t_3ab8286ad5efd6 1-11
+docs/mockups/ergonomics/brief.html
+  s_fd4be8e4695580::t_17f9d2689d7432 1
+docs/mockups/ergonomics/build.py
+  s_fd4be8e4695580::t_71ac16b70292b0 1-29
+docs/mockups/ergonomics/cockpit.html
+  s_fd4be8e4695580::t_189bb4b008c588 1
+docs/mockups/ergonomics/demo.js
+  s_fd4be8e4695580::t_08ad80d17d89be 1-20
+docs/mockups/ergonomics/index.html
+  s_fd4be8e4695580::t_c4490937e2b17b 1
+docs/mockups/ergonomics/style.css
+  s_fd4be8e4695580::t_ac996b48094799 1-11
+docs/mockups/ergonomics/thread.html
+  s_fd4be8e4695580::t_f684b82d013f3a 1
+docs/pitlane.md
+  s_fd4be8e4695580::t_bceb9021e52a7f 1-28
+docs/validacao-local.md
+  s_fd4be8e4695580::t_9fe5673e68a803 1-50
+docs/visao.md
+  s_fd4be8e4695580::t_45cc502a772ee5 1-88
+overdrive/analytics.py
+  s_fd4be8e4695580::t_1a4e41d40c745c 1-168
+overdrive/app.py
+  s_fd4be8e4695580::t_c053b8dafc0b0a 1-1099
+overdrive/auth.py
+  s_fd4be8e4695580::t_577f5112e44df0 1-256
+overdrive/backup.py
+  s_fd4be8e4695580::t_7e2a950c705e4b 1-106
+overdrive/config.py
+  s_fd4be8e4695580::t_1f03a96080b922 1-25
+overdrive/database.py
+  s_fd4be8e4695580::t_a05df102ab0fe0 1-84
+overdrive/importer.py
+  s_fd4be8e4695580::t_5c69aee92368de 1-177
+overdrive/material_migration.py
+  s_fd4be8e4695580::t_6c7dd59ca0df0c 1-121
+overdrive/mcp_server.py
+  s_fd4be8e4695580::t_11014158363c8e 1-249
+overdrive/models.py
+  s_fd4be8e4695580::t_1e534410f0cb2b 1-138
+overdrive/service.py
+  s_fd4be8e4695580::t_006a52913ebe9f 1-596
+overdrive/stage_migration.py
+  s_fd4be8e4695580::t_6048006f5bc903 1-23
+overdrive/stages.py
+  s_fd4be8e4695580::t_2110bd317aa128 1-12
+overdrive/static/app.css
+  s_fd4be8e4695580::t_b84903f7901d8c 1-2
+overdrive/static/app.js
+  s_fd4be8e4695580::t_3224881a08764c 1-203
+overdrive/static/htmx.min.js
+  s_fd4be8e4695580::t_6bc53c9ad5bfbe 1
+overdrive/static/pitlane.css
+  s_a94f9df40e488a::t_66652558ce84f6 1-55
+overdrive/static/source.css
+  s_fd4be8e4695580::t_453e54977570a1 1-42
+overdrive/storage.py
+  s_fd4be8e4695580::t_f20425cdee7306 1-109
+overdrive/templates/analytics.html
+  s_fd4be8e4695580::t_bf9e7c0716fcd1 1-14
+overdrive/templates/base.html
+  s_fd4be8e4695580::t_46af70dc32293f 1-9
+overdrive/templates/consent.html
+  s_fd4be8e4695580::t_367595ad7b9885 1
+overdrive/templates/deal.html
+  s_a94f9df40e488a::t_ae589a86a6a683 1-37
+overdrive/templates/deal_events.html
+  s_fd4be8e4695580::t_616acafd65d7cf 1-8
+overdrive/templates/deal_people.html
+  s_fd4be8e4695580::t_cfba338795fbb9 1
+overdrive/templates/deal_status.html
+  s_fd4be8e4695580::t_0a51e698e019c3 1
+overdrive/templates/deal_tasks.html
+  s_fd4be8e4695580::t_b7a9ca826f545e 1
+overdrive/templates/deal_upload.html
+  s_fd4be8e4695580::t_bcb29be1d15fea 1-6
+overdrive/templates/deals.html
+  s_a94f9df40e488a::t_7163dfe5bd6afc 1-5
+overdrive/templates/delete_material.html
+  s_fd4be8e4695580::t_f8cfb353dc12e6 1-10
+overdrive/templates/directory.html
+  s_fd4be8e4695580::t_b1a8b0611cb92d 1
+overdrive/templates/error.html
+  s_fd4be8e4695580::t_c02bc1a610cf32 1
+overdrive/templates/form.html
+  s_fd4be8e4695580::t_b6aef9bcc2c67f 1-12
+overdrive/templates/link.html
+  s_fd4be8e4695580::t_4a6833d5202cd1 1
+overdrive/templates/login.html
+  s_fd4be8e4695580::t_903f23704f170b 1
+overdrive/templates/material_preview.html
+  s_fd4be8e4695580::t_14f90acb659954 1
+overdrive/templates/record.html
+  s_fd4be8e4695580::t_0704cd0d2c615a 1
+overdrive/templates/search.html
+  s_fd4be8e4695580::t_041934b2f1a65c 1
+overdrive/templates/settings.html
+  s_fd4be8e4695580::t_b05f86fc3cb25a 1-3
+overdrive/templates/tasks.html
+  s_fd4be8e4695580::t_7d8b7a33f7b2e5 1
+overdrive/templates/transfer.html
+  s_fd4be8e4695580::t_0ac67227ad4eb6 1
+overdrive/voice.py
+  s_fd4be8e4695580::t_221c07660064de 1-53
+package-lock.json
+  s_fd4be8e4695580::t_b9043b01263c20 1-1136
+package.json
+  s_fd4be8e4695580::t_87173c792e1553 1
+pyproject.toml
+  s_fd4be8e4695580::t_a65f3de3a05b05 1-19
+schemas.surrealql
+  s_fd4be8e4695580::t_c0c20788b9f95f 1-149
+scripts/backup.py
+  s_fd4be8e4695580::t_49476fba68e90b 1-28
+scripts/bootstrap.py
+  s_fd4be8e4695580::t_e2cb4c482cb8f5 1-36
+scripts/configure_local.py
+  s_fd4be8e4695580::t_5f7d2ec44a3006 1-17
+scripts/import_csv.py
+  s_fd4be8e4695580::t_5df019ab647dc4 1-34
+scripts/import_pipedrive_files.py
+  s_fd4be8e4695580::t_413c0e32fe2680 1-164
+scripts/migrate_materials.py
+  s_fd4be8e4695580::t_d64df63afc0fdb 1-22
+scripts/migrate_stages.py
+  s_fd4be8e4695580::t_e212295e2d96f0 1-21
+scripts/verify_mcp.py
+  s_fd4be8e4695580::t_9327b19e393992 1-105
+tests/conftest.py
+  s_fd4be8e4695580::t_40c7e33bd3dafe 1-52
+tests/test_analytics.py
+  s_fd4be8e4695580::t_485943f517593e 1-122
+tests/test_backup.py
+  s_fd4be8e4695580::t_e7bdad4889c50e 1-44
+tests/test_database_refresh.py
+  s_fd4be8e4695580::t_ca5b0c15fdc693 1-6
+tests/test_deal_status.py
+  s_fd4be8e4695580::t_fd4b3b8e5b9f9a 1-52
+tests/test_dev_identity.py
+  s_fd4be8e4695580::t_342f9c8866e395 1-24
+tests/test_importer.py
+  s_fd4be8e4695580::t_8f78d93e86e0d4 1-28
+tests/test_journey.py
+  s_fd4be8e4695580::t_810a1e6234ee5e 1-196
+tests/test_materials.py
+  s_fd4be8e4695580::t_712a0c10e90bdf 1-228
+tests/test_oauth_mcp.py
+  s_fd4be8e4695580::t_0c7038bb82d761 1-201
+tests/test_pipedrive_files.py
+  s_fd4be8e4695580::t_c389b1e32ae753 1-33
+tests/test_pipedrive_import.py
+  s_fd4be8e4695580::t_9e85b25296014b 1-62
+tests/test_preview.py
+  s_fd4be8e4695580::t_ccf36458ba482d 1-44
+tests/test_security.py
+  s_fd4be8e4695580::t_d957c4bfef4199 1-99
+tests/test_sources.py
+  s_fd4be8e4695580::t_32097b8371de78 1-51
+tests/test_stages.py
+  s_fd4be8e4695580::t_6ad86ae6f93e18 1-60
+tests/test_transfer.py
+  s_fd4be8e4695580::t_0aae61936818d5 1-87
+tests/test_ui_voice.py
+  s_fd4be8e4695580::t_fb396fc01a114a 1-45
+uv.lock
+  s_fd4be8e4695580::t_608acf98ef8d87 1-1995
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a0aafa8d8bb8320eb28714a70337752ccf7fa4a1",
+  "prompts": {},
+  "sessions": {
+    "s_a94f9df40e488a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a08d9d-6601-76d0-bcd5-05f0d309020c",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Luis Novo <lfnovo@gmail.com>"
+    },
+    "s_fd4be8e4695580": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07c49-2533-7650-9c12-3397d50c57d5",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Luis Novo <lfnovo@gmail.com>"
+    }
+  }
+}
