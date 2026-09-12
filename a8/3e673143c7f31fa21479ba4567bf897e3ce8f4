@@ -1,0 +1,31 @@
+docs/README.md
+  s_a94f9df40e488a::t_0487af1ec455f8 5
+docs/installation.md
+  s_a94f9df40e488a::t_f579aa99e07239 38
+  s_a94f9df40e488a::t_0487af1ec455f8 17-18,61-64
+compose.yaml
+  s_a94f9df40e488a::t_f579aa99e07239 36,48
+README.md
+  s_a94f9df40e488a::t_0487af1ec455f8 53-54,60
+  s_a94f9df40e488a::t_f579aa99e07239 37
+docs/mcp.md
+  s_a94f9df40e488a::t_0487af1ec455f8 7-25
+docs/portainer.md
+  s_a94f9df40e488a::t_0487af1ec455f8 1-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a83e673143c7f31fa21479ba4567bf897e3ce8f4",
+  "prompts": {},
+  "sessions": {
+    "s_a94f9df40e488a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a08d9d-6601-76d0-bcd5-05f0d309020c",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Luis Novo <lfnovo@gmail.com>"
+    }
+  }
+}
