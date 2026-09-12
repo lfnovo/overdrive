@@ -1,11 +1,13 @@
 import json
 from functools import wraps
 from typing import Literal
+from urllib.parse import urlsplit
 
 from mcp.server.auth.middleware.auth_context import get_access_token
 from mcp.server.auth.settings import AuthSettings, ClientRegistrationOptions, RevocationOptions
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.exceptions import ToolError
+from mcp.server.transport_security import TransportSecuritySettings
 
 from .models import Attachment, Contact, Deal, Note, Organization, Task
 from .service import Actor, DomainError
@@ -13,6 +15,7 @@ from .storage import LocalStorage
 
 
 def create_mcp(crm, provider, settings):
+    origin = urlsplit(settings.app_url)
     mcp = FastMCP(
         "Overdrive",
         instructions="A CRM for humans and agents. Read each record and its version before editing. "
@@ -20,6 +23,11 @@ def create_mcp(crm, provider, settings):
         auth_server_provider=provider,
         stateless_http=True,
         json_response=True,
+        transport_security=TransportSecuritySettings(
+            enable_dns_rebinding_protection=True,
+            allowed_hosts=[origin.netloc],
+            allowed_origins=[f"{origin.scheme}://{origin.netloc}"],
+        ),
         auth=AuthSettings(
             issuer_url=settings.app_url,
             resource_server_url=settings.app_url + "/mcp",

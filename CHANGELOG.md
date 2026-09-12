@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1
+
+- Fix MCP connections through a public domain returning HTTP 421 after successful OAuth authorization. The MCP transport now accepts the host and origin configured in `APP_URL`, while continuing to reject untrusted hosts and origins.
+- Add regression coverage for password login, OAuth, MCP initialization and tool discovery on HTTPS domains, including custom ports.
+
+No database migrations or credential changes are required for this update.
+
 ## 0.1.0
 
 Initial public release of Overdrive, a self-hosted CRM for humans and AI agents.

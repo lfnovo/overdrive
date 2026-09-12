@@ -13,14 +13,14 @@ from overdrive.migrations import migrate
 
 
 @pytest_asyncio.fixture
-async def system(tmp_path):
+async def system(tmp_path, request):
     import json
 
     namespace = "overdrive_test_" + uuid.uuid4().hex[:10]
     s = Settings(
         surreal_namespace=namespace,
         surreal_database="test",
-        app_url="http://localhost:18765",
+        app_url=getattr(request, "param", "http://localhost:18765"),
         dev_login=True,
         dev_login_email="",
         admin_email="admin@example.test",
