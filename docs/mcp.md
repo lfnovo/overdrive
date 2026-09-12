@@ -37,6 +37,8 @@ After changing container environment variables or the image version, update the 
 | `pipeline_analytics` | Metrics restricted to the user's accessible deals. |
 | `transfer_deal`, `admin_save` | Administrative transfers and configuration. |
 
+`my_tasks` returns only the user's tasks on accessible, open, non-archived deals, including when `completed=true`. For historical tasks on a won, lost or archived deal, use `list_records(entity="task", deal_id="deal:...")`. Closing or archiving a deal does not delete or automatically complete its tasks.
+
 ## Editing safely
 
 Read a record first. Pass its `version` as `expected_version`, send only the fields you intend to change, and generate an `idempotency_key` for that operation. Reuse that key for retries of the **same** payload. If the record changed, read it again and reconcile the newer state rather than overwriting it blindly.

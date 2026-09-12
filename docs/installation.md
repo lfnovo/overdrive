@@ -35,7 +35,7 @@ If your database and uploaded files are already restored, see [Portainer with an
 | `BOOTSTRAP_USER`, `BOOTSTRAP_PASS` | Administrative database credentials, used for provisioning only. |
 | `STORAGE_PATH` | Filesystem directory for uploaded bytes; Compose uses `/data/attachments`. |
 | `MAX_UPLOAD_BYTES` | Upload limit; default 25 MiB. |
-| `OVERDRIVE_IMAGE` | Compose image override; default `ghcr.io/lfnovo/overdrive:0.1.1`. |
+| `OVERDRIVE_IMAGE` | Compose image override; default `ghcr.io/lfnovo/overdrive:0.1.2`. |
 | `OVERDRIVE_PORT` | Compose host port; default 18765. |
 
 The settings layer reads `.env` for native development. Compose explicitly forwards the variables it supports; add optional application settings to `environment` if needed. Keep database and attachment volumes together when moving an installation.

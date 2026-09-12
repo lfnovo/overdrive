@@ -16,7 +16,7 @@ The stages are New Lead → Briefing Ready → Proposal Ready → Proposal Sent 
 
 Click a value with a pencil to edit it in place, then Save or Cancel. Larger edits and new records use a side panel. **Deal so far** is the living Markdown summary: context, current position, decisions and next steps. It can be maintained by people or an external agent. Put dated observations in notes; automatic field changes remain in the history.
 
-Tasks always belong to a deal. Assign an owner and due date, and mark one as the primary next step. The board shows its date; hover or focus it for task context. Overdue or missing next steps are red, today's are highlighted, and future tasks are neutral. **My tasks** groups work assigned to you.
+Tasks always belong to a deal. Assign an owner and due date, and mark one as the primary next step. The board shows its date; hover or focus it for task context. Overdue or missing next steps are red, today's are highlighted, and future tasks are neutral. **My tasks** groups work assigned to you on open, non-archived deals, in both the Pending and Completed tabs. Tasks on won, lost or archived deals remain available on the deal itself; reopening and restoring a deal brings its tasks back to My tasks without changing their completion status.
 
 ## People and organizations
 

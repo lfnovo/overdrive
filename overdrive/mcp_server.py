@@ -170,7 +170,7 @@ def create_mcp(crm, provider, settings):
     async def my_tasks(
         completed: bool = False, unit_id: str = "", offset: int = 0, limit: int = 50
     ) -> list[dict]:
-        """Tasks assigned to the authenticated user, restricted to accessible deals."""
+        """Tasks assigned to the authenticated user on accessible, open, non-archived deals."""
         return await crm.listing(
             actor(), "task", mine=True, done=completed, unit=unit_id, offset=offset, limit=limit
         )

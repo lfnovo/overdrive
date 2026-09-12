@@ -33,7 +33,7 @@ services:
       retries: 20
     restart: unless-stopped
   bootstrap:
-    image: ${OVERDRIVE_IMAGE:-ghcr.io/lfnovo/overdrive:0.1.1}
+    image: ${OVERDRIVE_IMAGE:-ghcr.io/lfnovo/overdrive:0.1.2}
     build: .
     environment:
       <<: *app-environment
@@ -45,7 +45,7 @@ services:
         condition: service_healthy
     restart: "no"
   overdrive:
-    image: ${OVERDRIVE_IMAGE:-ghcr.io/lfnovo/overdrive:0.1.1}
+    image: ${OVERDRIVE_IMAGE:-ghcr.io/lfnovo/overdrive:0.1.2}
     build: .
     environment: *app-environment
     ports:

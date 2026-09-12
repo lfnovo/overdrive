@@ -127,7 +127,7 @@ class CRM:
             params["deal"] = ensure_record_id(deal, "deal")
             clauses.append("deal = $deal")
         if mine and table == "task":
-            clauses.append("owner = $actor")
+            clauses.extend(["owner = $actor", "deal.outcome = 'open'", "deal.archived = false"])
         if table == "task" and done is not None:
             params["done"] = done
             clauses.append("done = $done")

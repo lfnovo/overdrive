@@ -1,6 +1,6 @@
 [project]
 name = "overdrive"
-version = "0.1.1"
+version = "0.1.2"
 description = "A self-hosted CRM for humans and AI agents"
 license = "MIT"
 readme = "README.md"

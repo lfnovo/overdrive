@@ -34,7 +34,7 @@ docker compose run --rm --no-deps overdrive python scripts/activate_user.py \
 
 Open the one-use activation link printed by the last command, choose your password, then sign in at **http://localhost:18765** with your email. The Compose port binds to loopback only. Credentials are generated locally; existing `.env` files are never overwritten.
 
-Release images are available at `ghcr.io/lfnovo/overdrive:0.1.1` and `:latest`, for Linux AMD64 and ARM64. The Compose example pins the application and SurrealDB versions. To build the application yourself, use `docker compose up -d --build --wait`.
+Release images are available at `ghcr.io/lfnovo/overdrive:0.1.2` and `:latest`, for Linux AMD64 and ARM64. The Compose example pins the application and SurrealDB versions. To build the application yourself, use `docker compose up -d --build --wait`.
 
 Both database records and uploaded files survive container recreation through named volumes. `docker compose down` preserves them; **`docker compose down -v` deletes them**.
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2
+
+- My tasks now excludes tasks on won, lost and archived deals, in both Pending and Completed views. The same filter applies to the MCP `my_tasks` tool and API task listings with `mine=true`, before pagination.
+- Historical tasks remain available on their deals and return to My tasks when the deal is open and non-archived again. Their completion status is preserved.
+
+No database migrations or credential changes are required for this update.
+
 ## 0.1.1
 
 - Fix MCP connections through a public domain returning HTTP 421 after successful OAuth authorization. The MCP transport now accepts the host and origin configured in `APP_URL`, while continuing to reject untrusted hosts and origins.

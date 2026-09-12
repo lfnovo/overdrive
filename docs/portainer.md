@@ -9,7 +9,7 @@ Paste this into the Portainer stack editor:
 ```yaml
 services:
   overdrive:
-    image: ghcr.io/lfnovo/overdrive:0.1.1
+    image: ghcr.io/lfnovo/overdrive:0.1.2
     network_mode: host
     environment:
       APP_URL: ${APP_URL:?Set the public HTTPS origin}
@@ -68,4 +68,4 @@ Configure Caddy or another TLS proxy to forward your public HTTPS domain to the 
 
 After deploying, check `/health`, sign in, open a restored deal and a file preview, then connect an agent to `https://crm.example.com/mcp` and call `whoami`. See [MCP troubleshooting](mcp.md).
 
-For updates, read the release notes, back up the database and files, change the image tag, and update the stack to pull the image and recreate the container. Version 0.1.1 requires no database changes. Future releases may require a separate migration step before starting the app; follow the [upgrade procedure](operations.md). Do not delete or replace the restored volume when updating the stack.
+For updates, read the release notes, back up the database and files, change the image tag, and update the stack to pull the image and recreate the container. Versions 0.1.1 and 0.1.2 require no database changes. Future releases may require a separate migration step before starting the app; follow the [upgrade procedure](operations.md). Do not delete or replace the restored volume when updating the stack.
