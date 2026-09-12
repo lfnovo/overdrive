@@ -1,0 +1,16 @@
+*
+!Dockerfile
+!pyproject.toml
+!uv.lock
+!LICENSE
+!schemas.surrealql
+!overdrive/
+!overdrive/**
+!migrations/
+!migrations/**
+!scripts/
+!scripts/**
+**/__pycache__/
+**/*.pyc
+!third_party/
+!third_party/**

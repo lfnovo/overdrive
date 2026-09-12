@@ -1,0 +1,75 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SURREAL_URL: http://localhost:8019
+      SURREAL_USER: overdrive_test
+      SURREAL_PASS: test-application-password
+      SESSION_SECRET: ci-only-session-secret-not-for-production
+      BOOTSTRAP_USER: root
+      BOOTSTRAP_PASS: test-root-password
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - run: pip install uv==0.9.27
+      - run: uv sync --locked
+      - name: Start SurrealDB 3.2.0
+        run: |
+          docker run -d --name surrealdb-ci -p 8019:8000 surrealdb/surrealdb:v3.2.0 start --bind 0.0.0.0:8000 --user root --pass test-root-password memory
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:8019/health; then exit 0; fi
+            sleep 2
+          done
+          exit 1
+      - run: uv run ruff check overdrive tests scripts
+      - run: uv run pytest -q
+  compose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OVERDRIVE_IMAGE: overdrive:ci
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: python3 scripts/configure_local.py --admin-email admin@example.test --docker
+      - run: docker compose build
+      - run: docker compose up -d --no-build --wait --wait-timeout 180
+      - name: Activate initial administrator and exercise password authentication
+        run: |
+          mkdir -p .local
+          docker compose run --rm --no-deps overdrive python scripts/activate_user.py --email admin@example.test --expect-ns overdrive --expect-db app > .local/activation-output.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          output = Path('.local/activation-output.txt')
+          links = [line for line in output.read_text().splitlines() if line.startswith('http://')]
+          assert len(links) == 1
+          output.write_text(links[0])
+          output.chmod(0o600)
+          PY
+          SMOKE_ACTIVATION_FILE=.local/activation-output.txt node scripts/smoke_auth.cjs
+      - name: Exercise the CRM with password login
+        env:
+          SMOKE_PASSWORD: a disposable browser passphrase recovered
+        run: node scripts/smoke_browser.cjs
+      - name: Container logs on failure
+        if: failure()
+        run: docker compose logs --tail 100
+      - name: Clean up disposable volumes
+        if: always()
+        run: docker compose down -v

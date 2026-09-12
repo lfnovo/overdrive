@@ -1,0 +1,5 @@
+{% macro editable(record, field, label, text, style='') -%}
+<div class="inline-property {{style}}" data-record-property="{{record.id}}/{{field}}">
+<a class="inline-value" href="/edit/{{record.id}}?field={{field}}" data-inline aria-label="Edit {{label or 'Deal value' if field=='value_cents' else label or field.replace('_',' ')}}: {{text or 'Not set'}}"><span class="property-copy">{% if label %}<small>{{label}}</small>{% endif %}<span class="property-value {{'is-empty' if not text else ''}}">{{text or 'Add '+label|lower}}</span></span><svg class="edit-pencil" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15z"/></svg></a>
+</div>
+{%- endmacro %}

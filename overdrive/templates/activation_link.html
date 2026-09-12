@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block content %}<section class="login-card">
+<div class="eyebrow">PEOPLE & ACCESS</div><h1>{{'Pass the keys.' if activation_link else 'Activate or recover access'}}</h1><p><strong>{{person.name}}</strong><br>{{person.email}}</p>
+{% if activation_link %}
+<p>Share this link privately with this person. It works once and expires in 24 hours. Overdrive does not send an email.</p>
+<label>Activation link<input class="activation-url" type="text" value="{{activation_link}}" readonly aria-label="Activation link"></label>
+<p class="muted">This is the only time the link is shown. Generating another will invalidate this one.</p>
+{% else %}
+<p>This creates a one-time link to set a password. It immediately disables the current password, signs out existing sessions, and revokes agent connections. Google sign-in remains available if enabled.</p>
+<form method="post" class="auth-form"><input type="hidden" name="csrf" value="{{csrf}}"><button class="button primary wide">Generate activation link →</button></form>
+{% endif %}<p><a class="text-link" href="/settings">Back to settings</a></p></section>{% endblock %}

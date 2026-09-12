@@ -1,0 +1,1 @@
+{"name":"overdrive-ui","private":true,"scripts":{"build:css":"tailwindcss -i overdrive/static/source.css -o overdrive/static/app.css --minify","vendor":"cp node_modules/htmx.org/dist/htmx.min.js overdrive/static/htmx.min.js"},"devDependencies":{"@playwright/test":"^1.63.0","@tailwindcss/cli":"^4.0.0","htmx.org":"^2.0.0","tailwindcss":"^4.0.0"}}

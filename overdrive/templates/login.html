@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block content %}
+<section class="login-card">
+<div class="brand"><span class="brand-mark">↗</span>overdrive<span class="brand-dot">.</span></div>
+<div class="eyebrow">GOOD WORK STARTS WITH A CONVERSATION</div><h1>{{voice.login[0]}}</h1><p>{{voice.login[1]}}</p>
+{% if error %}<p class="notice" role="alert">{{error}}</p>{% endif %}
+{% if local_login %}<form action="/auth/password" method="post" class="auth-form">
+<input type="hidden" name="csrf" value="{{csrf}}">
+<label>Email<input type="email" name="email" autocomplete="username" maxlength="320" required></label>
+<label>Password<input type="password" name="password" autocomplete="current-password" maxlength="128" required></label>
+<button class="button primary wide">Sign in <span>→</span></button>
+</form><p class="muted auth-help">First time here or forgot your password? Ask your workspace administrator for an activation link.</p>{% endif %}
+{% if google_ready %}<a class="button wide" href="/auth/google">Continue with Google <span>↗</span></a>{% endif %}
+{% if dev_login %}<form action="/auth/dev" method="post"><input type="hidden" name="csrf" value="{{csrf}}"><button class="button wide">Continue as {{dev_name}} <span>→</span></button></form><p class="dev-note">Local development environment<br>{{dev_email}} · simulated identity</p>{% elif not google_ready and not local_login %}<p class="notice">Ask your administrator to configure a sign-in method.</p>{% endif %}
+<div class="login-foot">{{workspace_name|upper}} <span>OVERDRIVE / WORKSPACE</span></div></section>{% endblock %}

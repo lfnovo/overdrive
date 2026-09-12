@@ -1,0 +1,27 @@
+{% extends 'base.html' %}{% from 'inline.html' import editable %}{% block title %}{{record.name}} · Overdrive{% endblock %}{% block content %}
+<a class="rail-back" href="/directory/{{entity}}">← {{'Contacts' if entity=='contact' else 'Organizations'}}</a>
+<div class="relationship-layout">
+<aside class="relationship-identity">
+<div class="relationship-monogram">{{record.name[:2]|upper}}<span>{{'↗' if entity=='organization' else '◉'}}</span></div>
+<div class="eyebrow">{{'THE PERSON' if entity=='contact' else 'THE ORGANIZATION'}}</div>
+{{editable(record,'name','Name',record.name,'identity-name')}}
+{% if record.archived %}<span class="badge">Archived</span>{% endif %}
+<p class="relationship-hint">Good work starts with a connection.</p>
+<div class="relationship-properties">
+{% if entity=='contact' %}
+{{editable(record,'email','Email',record.email)}}
+{{editable(record,'phone','Phone',record.phone)}}
+{{editable(record,'organization','Organization',organization.name if organization else '')}}
+{% else %}{{editable(record,'domain','Domain',record.domain)}}{% endif %}
+</div>
+<a class="text-link" href="/edit/{{record.id}}">All details ↗</a>
+<p class="shared-record-hint">Shared across linked deals.<br>Changes stay in the record history.</p>
+</aside>
+<div class="relationship-work">
+<header class="relationship-heading"><div><div class="eyebrow">THE BIG PICTURE</div><h1>In good company<span>.</span></h1></div><span class="relationship-count">{{related|length}} <small>linked deal{{'s' if related|length!=1 else ''}}</small></span></header>
+<section class="relationship-deals"><div class="cockpit-section-title"><h2>Work in motion</h2><span>Related deals</span></div>
+{% for d in related %}<a class="relationship-deal" href="/deals/{{d.id}}"><span class="relationship-deal-index">{{'%02d'|format(loop.index)}}</span><span><strong>{{d.title}}</strong><small>{{d.stage}} · {{d.outcome|capitalize}}{% if d.archived %} · Archived{% endif %}</small></span><b>{{d.value_cents|money}}</b><span aria-hidden="true">↗</span></a>{% else %}<div class="empty">No accessible deals linked yet.</div>{% endfor %}
+</section>
+{% if entity=='organization' %}<section class="relationship-people"><div class="cockpit-section-title"><h2>The people</h2><span>{{contacts|length}} accessible contacts</span></div><div class="relationship-people-grid">{% for c in contacts %}<a href="/records/{{c.id}}" class="person-tile"><span class="avatar">{{c.name[:1]}}</span><span><strong>{{c.name}}</strong><small>{{c.email or 'Open contact'}}</small></span><span aria-hidden="true">↗</span></a>{% else %}<p class="empty">Contacts linked to your deals will appear here.</p>{% endfor %}</div></section>{% endif %}
+<details class="relationship-history"><summary>Along the way <span class="count-badge">{{history|length}}</span><small>Record history</small></summary><div data-record-history>{% for e in history %}<article class="profile-event"><div class="event-meta"><strong>{{e.actor_name}}</strong><time>{{e.created_at|localtime}}</time></div><p>{{e.action|action_label}}</p><details><summary>View changes</summary><dl class="change-list">{% for field,before,after in e.changes|change_fields %}<dt>{{field}}</dt><dd>{% if before is not none %}<del>{{before}}</del> → {% endif %}{{after if after is not none else 'Not set'}}</dd>{% endfor %}</dl></details></article>{% else %}<p class="empty">No changes recorded.</p>{% endfor %}</div></details>
+</div></div>{% endblock %}

@@ -1,0 +1,6 @@
+<details class="material-upload"><summary class="button small">＋ Upload file</summary><form class="panel upload-form" action="/api/deals/{{record.id}}/files" method="post" enctype="multipart/form-data">
+<input type="hidden" name="csrf" value="{{csrf}}"><input type="hidden" name="key" value="{{key}}">
+<label for="file">Upload file <small>Up to 25 MB · access follows the deal</small></label><input type="file" name="file" id="file" required>
+<label for="upload-title">Title <small>Optional; defaults to the filename</small></label><input id="upload-title" name="title" maxlength="200">
+<label for="upload-description">Description <small>Optional</small></label><textarea id="upload-description" name="description" rows="2" maxlength="20000"></textarea>
+<button class="button primary small">Upload file</button></form></details>

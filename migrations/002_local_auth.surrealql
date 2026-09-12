@@ -1,0 +1,13 @@
+DEFINE TABLE IF NOT EXISTS credential SCHEMAFULL PERMISSIONS NONE;
+DEFINE FIELD IF NOT EXISTS subject ON credential TYPE record<user>;
+DEFINE FIELD IF NOT EXISTS password_hash ON credential TYPE string DEFAULT '';
+DEFINE FIELD IF NOT EXISTS epoch ON credential TYPE string DEFAULT '';
+DEFINE FIELD IF NOT EXISTS activation_hash ON credential TYPE string DEFAULT '';
+DEFINE FIELD IF NOT EXISTS activation_expires ON credential TYPE int DEFAULT 0;
+DEFINE INDEX IF NOT EXISTS credential_subject ON credential FIELDS subject UNIQUE;
+DEFINE INDEX IF NOT EXISTS credential_activation ON credential FIELDS activation_hash;
+
+DEFINE TABLE IF NOT EXISTS auth_throttle SCHEMAFULL PERMISSIONS NONE;
+DEFINE FIELD IF NOT EXISTS attempts ON auth_throttle TYPE int;
+DEFINE FIELD IF NOT EXISTS expires_at ON auth_throttle TYPE int;
+DEFINE INDEX IF NOT EXISTS throttle_expiration ON auth_throttle FIELDS expires_at;

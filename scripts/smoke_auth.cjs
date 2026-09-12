@@ -1,0 +1,57 @@
+// A disposable instance only. Supply its one-use admin link in a private local file.
+const { chromium, expect } = require('@playwright/test');
+const fs = require('node:fs');
+(async () => {
+  if (!process.env.SMOKE_ACTIVATION_FILE) throw new Error('SMOKE_ACTIVATION_FILE is required');
+  const activation = fs.readFileSync(process.env.SMOKE_ACTIVATION_FILE, 'utf8').trim();
+  const base = new URL(activation).origin;
+  const email = process.env.SMOKE_EMAIL || 'admin@example.test';
+  const password = 'a disposable browser passphrase';
+  const browser = await chromium.launch({headless: true});
+  try {
+    const page = await browser.newPage({viewport:{width:1440,height:1000}});
+    const errors=[];
+    page.on('pageerror', error=>errors.push(error.message));
+    await page.goto(base+'/login');
+    await expect(page.getByRole('button', {name:/Continue as/})).toHaveCount(0);
+    await expect(page.getByLabel('Email', {exact:true})).toBeVisible();
+    await page.goto(activation);
+    await page.getByLabel('New password', {exact:true}).fill(password);
+    await page.getByLabel('Confirm password', {exact:true}).fill(password);
+    await page.getByRole('button', {name:'Set password'}).click();
+    await expect(page.getByRole('heading', {name:'Your keys are ready.'})).toBeVisible();
+    await page.getByRole('link', {name:/Continue to sign in/}).click();
+    await page.getByLabel('Email', {exact:true}).fill(email);
+    await page.getByLabel('Password', {exact:true}).fill(password);
+    await page.getByRole('button', {name:'Sign in', exact:false}).click();
+    await expect(page).toHaveURL(base+'/deals');
+    await page.goto(base+'/settings');
+    await page.getByRole('link', {name:'Change password', exact:true}).click();
+    await page.getByLabel('Current password', {exact:true}).fill(password);
+    await page.getByLabel('New password', {exact:true}).fill(password+' changed');
+    await page.getByLabel('Confirm password', {exact:true}).fill(password+' changed');
+    await page.getByRole('button', {name:/Change password/}).click();
+    await expect(page).toHaveURL(base+'/settings');
+    await page.getByRole('link', {name:'Set up / reset password'}).click();
+    await page.getByRole('button', {name:/Generate activation link/}).click();
+    const reset = await page.getByRole('textbox', {name:'Activation link'}).inputValue();
+    await page.goto(base+'/settings');
+    await expect(page).toHaveURL(/\/login/);
+    await page.goto(reset);
+    await page.setViewportSize({width:390,height:844});
+    await expect(page.getByLabel('New password', {exact:true})).toBeVisible();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+    if(process.env.SMOKE_SCREENSHOT) await page.screenshot({path:process.env.SMOKE_SCREENSHOT,fullPage:true});
+    await page.getByLabel('New password', {exact:true}).fill(password+' recovered');
+    await page.getByLabel('Confirm password', {exact:true}).fill(password+' recovered');
+    await page.getByRole('button', {name:'Set password'}).click();
+    await expect(page.getByRole('heading', {name:'Your keys are ready.'})).toBeVisible();
+    await page.getByRole('link', {name:/Continue to sign in/}).click();
+    await page.getByLabel('Email', {exact:true}).fill(email);
+    await page.getByLabel('Password', {exact:true}).fill(password+' recovered');
+    await page.getByRole('button', {name:'Sign in', exact:false}).click();
+    await expect(page).toHaveURL(base+'/settings');
+    expect(errors).toEqual([]);
+    console.log('Auth browser smoke passed: activation, password login, change, recovery, session revocation, mobile.');
+  } finally {await browser.close();}
+})().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="breadcrumbs"><a href="/deals/{{record.deal}}?tab=files">Files & links</a><span>/</span>Delete</div>
+<div class="page-heading"><div><h1>Delete {{'file' if record.storage_key else 'link'}}?</h1><p>{{record.title}}</p></div></div>
+<form class="panel record-form" method="post" action="/materials/{{record.id}}/delete">
+<input type="hidden" name="csrf" value="{{csrf}}"><input type="hidden" name="key" value="{{key}}"><input type="hidden" name="version" value="{{record.version}}">
+<p>{{'The file will be removed from this deal and local storage.' if record.storage_key else 'The link will be removed from this deal. The destination website will not be changed.'}} You cannot undo this in the app. The change will remain in the activity log.</p>
+<div class="form-actions"><a class="button" href="/deals/{{record.deal}}?tab=files">Cancel</a><button class="button primary">Confirm deletion</button></div>
+</form>
+{% endblock %}

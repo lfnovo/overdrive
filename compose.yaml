@@ -1,0 +1,61 @@
+x-app-environment: &app-environment
+  APP_URL: ${APP_URL:-http://localhost:18765}
+  WORKSPACE_NAME: ${WORKSPACE_NAME:-Overdrive}
+  ADMIN_EMAIL: ${ADMIN_EMAIL:?Set ADMIN_EMAIL}
+  ADMIN_NAME: ${ADMIN_NAME:-Administrator}
+  SESSION_SECRET: ${SESSION_SECRET:?Generate SESSION_SECRET}
+  SURREAL_URL: http://surrealdb:8000
+  SURREAL_NAMESPACE: ${SURREAL_NAMESPACE:-overdrive}
+  SURREAL_DATABASE: ${SURREAL_DATABASE:-app}
+  SURREAL_USER: ${SURREAL_USER:-overdrive_app}
+  SURREAL_PASS: ${SURREAL_PASS:?Generate SURREAL_PASS}
+  STORAGE_PATH: /data/attachments
+  DEV_LOGIN: ${DEV_LOGIN:-false}
+  DEV_LOGIN_ALLOW_REMOTE: ${DEV_LOGIN_ALLOW_REMOTE:-false}
+  LOCAL_LOGIN: ${LOCAL_LOGIN:-true}
+  GOOGLE_LOGIN: ${GOOGLE_LOGIN:-true}
+  GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+  GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:v3.2.0
+    command: start --bind 0.0.0.0:8000 rocksdb:/home/nonroot/overdrive.db
+    environment:
+      SURREAL_USER: ${BOOTSTRAP_USER:-root}
+      SURREAL_PASS: ${BOOTSTRAP_PASS:?Generate BOOTSTRAP_PASS}
+    volumes:
+      - database:/home/nonroot
+    healthcheck:
+      test: ["CMD", "/surreal", "is-ready", "--endpoint", "http://localhost:8000"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+  bootstrap:
+    image: ${OVERDRIVE_IMAGE:-ghcr.io/lfnovo/overdrive:0.1.0}
+    build: .
+    environment:
+      <<: *app-environment
+      BOOTSTRAP_USER: ${BOOTSTRAP_USER:-root}
+      BOOTSTRAP_PASS: ${BOOTSTRAP_PASS:?Generate BOOTSTRAP_PASS}
+    command: python scripts/bootstrap.py
+    depends_on:
+      surrealdb:
+        condition: service_healthy
+    restart: "no"
+  overdrive:
+    image: ${OVERDRIVE_IMAGE:-ghcr.io/lfnovo/overdrive:0.1.0}
+    build: .
+    environment: *app-environment
+    ports:
+      - "127.0.0.1:${OVERDRIVE_PORT:-18765}:8000"
+    volumes:
+      - attachments:/data/attachments
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+    restart: unless-stopped
+volumes:
+  database:
+  attachments:
