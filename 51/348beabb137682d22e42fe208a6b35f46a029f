@@ -1,0 +1,30 @@
+CHANGELOG.md
+  s_a94f9df40e488a::t_326ebfe57e9bff 3-9
+tests/conftest.py
+  s_a94f9df40e488a::t_1f0a6bb06f02ff 16,23
+tests/test_mcp_public_origin.py
+  s_a94f9df40e488a::t_bb6e763c14caa4 51
+  s_a94f9df40e488a::t_1f0a6bb06f02ff 1-50,52-54
+overdrive/mcp_server.py
+  s_a94f9df40e488a::t_4d7fdb1b41eb7a 4,10,18,26-30
+pyproject.toml
+  s_a94f9df40e488a::t_326ebfe57e9bff 3
+uv.lock
+  s_a94f9df40e488a::t_604fb1a8f564d1 1055
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "51348beabb137682d22e42fe208a6b35f46a029f",
+  "prompts": {},
+  "sessions": {
+    "s_a94f9df40e488a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a08d9d-6601-76d0-bcd5-05f0d309020c",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Luis Novo <lfnovo@gmail.com>"
+    }
+  }
+}
