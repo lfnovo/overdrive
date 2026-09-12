@@ -1,0 +1,247 @@
+.dockerignore
+  s_a94f9df40e488a::t_31adfa3bec93a4 1-16
+.env.example
+  s_a94f9df40e488a::t_08261e42dd4550 1-22
+.github/workflows/ci.yml
+  s_a94f9df40e488a::t_3dabc47e4ed445 1-75
+.github/workflows/release.yml
+  s_a94f9df40e488a::t_34b3c0b6fb2e15 1-56
+.gitignore
+  s_a94f9df40e488a::t_03bc6727c557f7 1-15
+CHANGELOG.md
+  s_a94f9df40e488a::t_168336bfeb5b7b 1-19
+CONTRIBUTING.md
+  s_a94f9df40e488a::t_482d50059e5f58 1-13
+Dockerfile
+  s_a94f9df40e488a::t_13fb454c2b1525 1-26
+LICENSE
+  s_a94f9df40e488a::t_7f1f65c2ac866c 1-21
+README.md
+  s_a94f9df40e488a::t_ee36b9b9bee9b7 1-67
+SECURITY.md
+  s_a94f9df40e488a::t_e6201c08f4c417 1-15
+compose.yaml
+  s_a94f9df40e488a::t_d3e5ae475cd447 1-61
+docs/README.md
+  s_a94f9df40e488a::t_bf91e443f1e9b4 1-17
+docs/authentication.md
+  s_a94f9df40e488a::t_d9e42737b65522 1-56
+docs/database.md
+  s_a94f9df40e488a::t_bc2c83e9acdaba 1-70
+docs/development.md
+  s_a94f9df40e488a::t_2969b10f79f842 1-78
+docs/installation.md
+  s_a94f9df40e488a::t_97b4edf92802d6 1-58
+docs/mcp.md
+  s_a94f9df40e488a::t_f06b1b1a68a798 1-37
+docs/operations.md
+  s_a94f9df40e488a::t_c44e10ee17d58a 1-74
+docs/usage.md
+  s_a94f9df40e488a::t_dcf9adb4e69ca2 1-40
+migrations/001_initial_schema.surrealql
+  s_a94f9df40e488a::t_5a6fe316384c0d 1-149
+migrations/002_local_auth.surrealql
+  s_a94f9df40e488a::t_fecc3e61f4fcb6 1-13
+overdrive/analytics.py
+  s_fd4be8e4695580::t_4f11ecd65d7a79 1-168
+overdrive/app.py
+  s_a94f9df40e488a::t_696ebb24b2e327 1-1243
+overdrive/auth.py
+  s_a94f9df40e488a::t_149df33fbd2e9d 1-297
+overdrive/backup.py
+  s_a94f9df40e488a::t_8a41dce34eb7ae 1-117
+overdrive/config.py
+  s_a94f9df40e488a::t_d8d7d234f38de6 1-30
+overdrive/database.py
+  s_a94f9df40e488a::t_0ad44fe377c416 1-127
+overdrive/importer.py
+  s_a94f9df40e488a::t_733fbad870eef1 1-177
+overdrive/local_auth.py
+  s_a94f9df40e488a::t_f4de5e46083a69 1-173
+overdrive/material_migration.py
+  s_a94f9df40e488a::t_148c134f74557b 1-121
+overdrive/mcp_server.py
+  s_a94f9df40e488a::t_8aed9f9847370c 1-240
+overdrive/migrations.py
+  s_a94f9df40e488a::t_959f324d682696 1-64
+overdrive/models.py
+  s_fd4be8e4695580::t_268e528d6c472e 1-138
+overdrive/service.py
+  s_fd4be8e4695580::t_011d415a573468 1-596
+overdrive/stage_migration.py
+  s_a94f9df40e488a::t_06c666de5e6441 1-23
+overdrive/stages.py
+  s_fd4be8e4695580::t_3fa2aca22ed65d 1-12
+overdrive/static/app.css
+  s_fd4be8e4695580::t_cbb8081f24ca47 1-2
+overdrive/static/app.js
+  s_a94f9df40e488a::t_d0c9ef5c371fe7 1-339
+overdrive/static/htmx.min.js
+  s_fd4be8e4695580::t_41f59fc9b4f099 1
+overdrive/static/pitlane.css
+  s_a94f9df40e488a::t_9ba521bdf66f40 1-74
+overdrive/static/source.css
+  s_fd4be8e4695580::t_8247db2e560f29 1-42
+overdrive/storage.py
+  s_a94f9df40e488a::t_fd714c8a366d62 1-109
+overdrive/templates/activation_link.html
+  s_a94f9df40e488a::t_bd8a3edaed6051 1-10
+overdrive/templates/analytics.html
+  s_fd4be8e4695580::t_bfc35f49b25a44 1-14
+overdrive/templates/base.html
+  s_a94f9df40e488a::t_1b44d48360611b 1-10
+overdrive/templates/consent.html
+  s_fd4be8e4695580::t_ac7018bcfbd943 1
+overdrive/templates/deal.html
+  s_a94f9df40e488a::t_7b650171126727 1-37
+overdrive/templates/deal_events.html
+  s_fd4be8e4695580::t_0034c596da9c5e 1-8
+overdrive/templates/deal_people.html
+  s_fd4be8e4695580::t_3de4c452325af7 1
+overdrive/templates/deal_status.html
+  s_fd4be8e4695580::t_675515d75af350 1
+overdrive/templates/deal_tasks.html
+  s_fd4be8e4695580::t_d2a667d9e89629 1
+overdrive/templates/deal_upload.html
+  s_fd4be8e4695580::t_bff730e0ea0b29 1-6
+overdrive/templates/deals.html
+  s_a94f9df40e488a::t_198cd4f7974c0a 1-5
+overdrive/templates/delete_material.html
+  s_fd4be8e4695580::t_077fc04dd230a1 1-10
+overdrive/templates/directory.html
+  s_a94f9df40e488a::t_ac489672f7c31e 1
+overdrive/templates/editor_shell.html
+  s_a94f9df40e488a::t_68cfe35bec3f18 1
+overdrive/templates/error.html
+  s_fd4be8e4695580::t_5f7fee4c16a05f 1
+overdrive/templates/form.html
+  s_a94f9df40e488a::t_fcbf1ec44d1f9c 1-12
+overdrive/templates/inline.html
+  s_a94f9df40e488a::t_9053c2a3a414c7 1-5
+overdrive/templates/link.html
+  s_fd4be8e4695580::t_ff84225371592c 1
+overdrive/templates/login.html
+  s_a94f9df40e488a::t_a33aa0310cd762 1-14
+overdrive/templates/material_preview.html
+  s_fd4be8e4695580::t_5ca741c11fc902 1
+overdrive/templates/password.html
+  s_a94f9df40e488a::t_3954c7b3e5b70f 1-14
+overdrive/templates/password_ready.html
+  s_a94f9df40e488a::t_27566d5b48ef66 1
+overdrive/templates/record.html
+  s_a94f9df40e488a::t_c6d2ea1550437f 1-27
+overdrive/templates/search.html
+  s_fd4be8e4695580::t_1dc7f0b9246cb0 1
+overdrive/templates/settings.html
+  s_a94f9df40e488a::t_b5a72ca0189179 1-4
+overdrive/templates/tasks.html
+  s_fd4be8e4695580::t_f076cefc55d17b 1
+overdrive/templates/transfer.html
+  s_fd4be8e4695580::t_38e152bd5f21d8 1
+overdrive/voice.py
+  s_fd4be8e4695580::t_2c3ca977f26745 1-53
+package-lock.json
+  s_a94f9df40e488a::t_4384305c9de1c4 1-1182
+package.json
+  s_a94f9df40e488a::t_b2c73d6c0e93dd 1
+pyproject.toml
+  s_a94f9df40e488a::t_85895a10ed1a45 1-31
+schemas.surrealql
+  s_a94f9df40e488a::t_7656bd7ba1798a 1-162
+scripts/activate_user.py
+  s_a94f9df40e488a::t_d94034e54f1d0e 1-41
+scripts/backup.py
+  s_fd4be8e4695580::t_9994f5b443a63f 1-28
+scripts/bootstrap.py
+  s_a94f9df40e488a::t_8c4000b103b737 1-37
+scripts/configure_local.py
+  s_a94f9df40e488a::t_d414df994ad24c 1-33
+scripts/import_csv.py
+  s_a94f9df40e488a::t_82252f63ff343e 1-32
+scripts/import_pipedrive_files.py
+  s_a94f9df40e488a::t_15367f029e3f60 1-171
+scripts/migrate.py
+  s_a94f9df40e488a::t_97d354815789a0 1-33
+scripts/migrate_materials.py
+  s_fd4be8e4695580::t_dd0f9a966facdf 1-22
+scripts/migrate_stages.py
+  s_fd4be8e4695580::t_6801676f6e7d22 1-21
+scripts/smoke_auth.cjs
+  s_a94f9df40e488a::t_79143f0a8052ef 1-57
+scripts/smoke_browser.cjs
+  s_a94f9df40e488a::t_657b0111c46592 1-45
+scripts/verify_mcp.py
+  s_a94f9df40e488a::t_a3f8ecdc1036d2 1-105
+tests/conftest.py
+  s_a94f9df40e488a::t_b2fab4ddbcfba6 1-56
+tests/test_analytics.py
+  s_a94f9df40e488a::t_494060f499e6b3 1-122
+tests/test_backup.py
+  s_a94f9df40e488a::t_2cea024f30b23c 1-56
+tests/test_contextual_editing.py
+  s_a94f9df40e488a::t_a16ca871f61b09 1-69
+tests/test_database_refresh.py
+  s_a94f9df40e488a::t_d8c583faf8d88e 1-11
+tests/test_deal_status.py
+  s_a94f9df40e488a::t_fea0d54865fb79 1-52
+tests/test_dev_identity.py
+  s_a94f9df40e488a::t_adce62306a1bd9 1-24
+tests/test_importer.py
+  s_a94f9df40e488a::t_ed85495334376d 1-28
+tests/test_journey.py
+  s_a94f9df40e488a::t_a5c4d71376e26a 1-196
+tests/test_local_auth.py
+  s_a94f9df40e488a::t_965ed5825bdc88 1-241
+tests/test_materials.py
+  s_a94f9df40e488a::t_0e299f8aa84f53 1-228
+tests/test_migrations.py
+  s_a94f9df40e488a::t_3cd508da7e89eb 1-78
+tests/test_oauth_mcp.py
+  s_a94f9df40e488a::t_32a2b54c560010 1-201
+tests/test_pipedrive_files.py
+  s_a94f9df40e488a::t_ee49bc2be4c3d4 1-33
+tests/test_pipedrive_import.py
+  s_a94f9df40e488a::t_feb731ed876d78 1-62
+tests/test_preview.py
+  s_a94f9df40e488a::t_b71f1ddd3c719e 1-44
+tests/test_security.py
+  s_a94f9df40e488a::t_38e9c42707c2af 1-99
+tests/test_sources.py
+  s_a94f9df40e488a::t_7397ec44adcedd 1-51
+tests/test_stages.py
+  s_a94f9df40e488a::t_27ed56dd8565c5 1-60
+tests/test_transfer.py
+  s_a94f9df40e488a::t_107a56165974eb 1-87
+tests/test_ui_voice.py
+  s_a94f9df40e488a::t_1b22f94551ca18 1-45
+third_party/htmx.org-LICENSE.txt
+  s_a94f9df40e488a::t_a5b7be5153f82e 1-13
+third_party/tailwindcss-LICENSE.txt
+  s_a94f9df40e488a::t_08e33711e07d8a 1-21
+uv.lock
+  s_a94f9df40e488a::t_a9c9447a287fd3 1-2076
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d6f2d49ea7b318e16b0f6ce933fa1e6af2ae3ff6",
+  "prompts": {},
+  "sessions": {
+    "s_a94f9df40e488a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a08d9d-6601-76d0-bcd5-05f0d309020c",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Luis Novo <lfnovo@gmail.com>"
+    },
+    "s_fd4be8e4695580": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07c49-2533-7650-9c12-3397d50c57d5",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Luis Novo <lfnovo@gmail.com>"
+    }
+  }
+}
