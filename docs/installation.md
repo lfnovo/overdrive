@@ -14,6 +14,8 @@ Use [local password activation](authentication.md) without configuring Google. F
 
 The Compose file reads individual variables; it does not pass root database credentials to the running application. The database port is internal to the Compose network. Only the app is published, on host loopback. The generator does not overwrite an existing `.env`.
 
+If your database and uploaded files are already restored, see [Portainer with an existing database](portainer.md) for an app-only stack. A running SurrealDB server alone is not enough: the target database needs the application user and schema migrations first.
+
 ## Configuration
 
 | Variable | Purpose |
@@ -33,7 +35,7 @@ The Compose file reads individual variables; it does not pass root database cred
 | `BOOTSTRAP_USER`, `BOOTSTRAP_PASS` | Administrative database credentials, used for provisioning only. |
 | `STORAGE_PATH` | Filesystem directory for uploaded bytes; Compose uses `/data/attachments`. |
 | `MAX_UPLOAD_BYTES` | Upload limit; default 25 MiB. |
-| `OVERDRIVE_IMAGE` | Compose image override; default `ghcr.io/lfnovo/overdrive:0.1.0`. |
+| `OVERDRIVE_IMAGE` | Compose image override; default `ghcr.io/lfnovo/overdrive:0.1.1`. |
 | `OVERDRIVE_PORT` | Compose host port; default 18765. |
 
 The settings layer reads `.env` for native development. Compose explicitly forwards the variables it supports; add optional application settings to `environment` if needed. Keep database and attachment volumes together when moving an installation.
@@ -56,3 +58,7 @@ Place a reverse proxy such as Caddy or nginx on the same host, proxying the publ
 If the proxy is a separate container, join it to the app's Docker network and proxy to `overdrive:8000`. Do not expose the database publicly. The default Compose file is a single-host example; Kubernetes deployment is not included in this release.
 
 Before inviting users, test sign-in with your enabled methods, an unauthorized account, sign-out, and an MCP client's browser-consent flow on the actual HTTPS origin. Google requires a live-provider check when enabled.
+
+Open the public HTTPS URL when signing in. With an HTTPS `APP_URL`, session cookies are marked `Secure`; signing in through the backend's HTTP IP address will fail with “This form has expired.” The proxy-to-app connection can still use HTTP.
+
+Keep the original public `Host` header when proxying MCP requests. Since 0.1.1, the MCP transport accepts the host and origin from `APP_URL` and rejects unrelated hosts and origins. Do not rewrite the host to localhost or disable the protection to work around a configuration mismatch.

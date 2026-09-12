@@ -2,6 +2,7 @@
 
 - [Authentication](authentication.md): local passwords, activation links, recovery and Google.
 - [Installation](installation.md): Compose, environment variables, Google identity and HTTPS.
+- [Portainer](portainer.md): app-only stack using an existing database and restored attachment volume.
 - [Usage](usage.md): pipeline, business units, contacts, tasks, materials and analytics.
 - [MCP](mcp.md): agent authorization, tools and safe updates.
 - [Database](database.md): connections, schema migrations and adoption of an existing database.

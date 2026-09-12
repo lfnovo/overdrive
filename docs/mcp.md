@@ -4,6 +4,25 @@ Overdrive exposes `/mcp` using Streamable HTTP. Use a client that supports remot
 
 The agent's user signs in with a local password or Google and approves the connection in the browser. Tokens identify that user; membership and account status are checked again during operations. Administrative tools require an administrator. Revoke connections under Settings. The agent does not receive a database password.
 
+## First connection
+
+1. Set the server URL to `https://crm.example.com/mcp`, using your own public domain.
+2. Select Streamable HTTP and OAuth in the client. Client registration and token exchange happen through the OAuth flow; do not supply the database password or `SESSION_SECRET`.
+3. Sign in and approve the connection in the browser.
+4. Call `whoami`, then `list_records(entity="deal")` and `my_tasks` for a read-only check.
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| `Issuer URL must be HTTPS` at startup | Use the external HTTPS origin in `APP_URL`. HTTP is only accepted for localhost development. |
+| Login returns “This form has expired” | Open a fresh login page on the HTTPS domain, not the backend's HTTP IP address. Secure session cookies are required. |
+| OAuth succeeds, but MCP reports zero tools and the server logs HTTP 421 / `Invalid Host header` | Upgrade from 0.1.0 to 0.1.1 or newer. On current versions, verify that the request host matches `APP_URL` and that the proxy preserves it. |
+| HTTP 403 / `Invalid Origin header` | The client's Origin, when present, must match the origin in `APP_URL`. |
+| HTTP 401 | An unauthenticated request to `/mcp` normally returns 401 with OAuth discovery metadata. If it persists after authorization, reconnect the client and check the user's account and grant status. |
+
+After changing container environment variables or the image version, update the stack to recreate the container, then reconnect the MCP client. Restarting the existing container does not apply new environment values.
+
 ## Tools
 
 | Tools | Use |

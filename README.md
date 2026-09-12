@@ -34,7 +34,7 @@ docker compose run --rm --no-deps overdrive python scripts/activate_user.py \
 
 Open the one-use activation link printed by the last command, choose your password, then sign in at **http://localhost:18765** with your email. The Compose port binds to loopback only. Credentials are generated locally; existing `.env` files are never overwritten.
 
-Release images are available at `ghcr.io/lfnovo/overdrive:0.1.0` and `:latest`, for Linux AMD64 and ARM64. The Compose example pins the application and SurrealDB versions. To build the application yourself, use `docker compose up -d --build --wait`.
+Release images are available at `ghcr.io/lfnovo/overdrive:0.1.1` and `:latest`, for Linux AMD64 and ARM64. The Compose example pins the application and SurrealDB versions. To build the application yourself, use `docker compose up -d --build --wait`.
 
 Both database records and uploaded files survive container recreation through named volumes. `docker compose down` preserves them; **`docker compose down -v` deletes them**.
 
@@ -50,11 +50,14 @@ Add `https://your-overdrive.example/mcp` as a remote MCP server in a client that
 
 See [MCP usage](docs/mcp.md) for tools, version checks, idempotency and file transfers.
 
+Use version **0.1.1 or newer** for MCP through a public domain. Version 0.1.0 could complete OAuth but reject the MCP connection with HTTP 421.
+
 ## Documentation
 
 - [Authentication and account recovery](docs/authentication.md)
 - [Using Overdrive](docs/usage.md)
 - [Configuration and installation](docs/installation.md)
+- [Portainer with an existing database](docs/portainer.md)
 - [Database connections and migrations](docs/database.md)
 - [Backup, restore and upgrades](docs/operations.md)
 - [Development and tests](docs/development.md)
