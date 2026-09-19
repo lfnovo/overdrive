@@ -54,16 +54,19 @@ Test restoration periodically. Having an archive is not the same as having a ver
 
 1. Read the release notes and save a backup while the old version is stopped.
 2. Update the checked-out release and pin `OVERDRIVE_IMAGE` in `.env` to the new image version. Keep SurrealDB upgrades separate unless the release explicitly requires one.
-3. Pull images and run bootstrap once. It applies pending migrations without changing an existing database user's password.
+3. Stop the application again if it was restarted after backup. Leave SurrealDB running, pull images and run bootstrap once. It applies pending migrations without changing an existing database user's password.
 4. Start the new application and verify sign-in, the pipeline, a file preview and an MCP connection.
 
 ```sh
+docker compose stop overdrive
 docker compose pull
 docker compose run --rm bootstrap
 docker compose up -d --wait
 ```
 
-Use one migration process at a time. The app does not migrate automatically at startup. See [database migrations](database.md) for explicit commands and legacy adoption. Returning to an old image does not undo schema changes; restore the matching backup into a fresh installation when a rollback requires it.
+Run these commands sequentially and stop if migration fails; investigate the schema state before starting an application against it. Use one migration process at a time. The app does not migrate automatically at startup. See [database migrations](database.md) for explicit commands and legacy adoption. Returning to an old image does not undo schema changes; restore the matching backup into a fresh installation when a rollback requires it.
+
+The commands above apply to the full repository Compose stack. An [app-only Portainer stack](portainer.md) has no bootstrap service: use the guarded migration CLI in a separate helper with the target database settings, or run it from a configured checkout, while the app is stopped. Do not start a second database or recreate restored volumes to perform an app update. If release notes explicitly state there are no schema changes, no migration step is needed.
 
 ## Health and troubleshooting
 
@@ -72,3 +75,12 @@ Use one migration process at a time. The app does not migrate automatically at s
 - `docker compose logs --tail 100 overdrive bootstrap surrealdb` shows startup failures. Never post unredacted logs or `.env` files publicly.
 - Files live in the `attachments` volume, not inside the application image and not in SurrealDB BLOB storage.
 - Password recovery and activation commands are documented in [authentication](authentication.md).
+
+| Failure | First check |
+| --- | --- |
+| Database authentication rejected | Confirm the application user's password and exact namespace/database. Root credentials cannot substitute for a database-scoped user; bootstrap does not reset an existing user's password. |
+| Connection refused | Check the database listener and Docker network. `127.0.0.1` reaches the host only with host networking; in a bridge-networked container it reaches that container. |
+| Issuer HTTPS, expired form or MCP Host/Origin error | Follow [MCP troubleshooting](mcp.md) and verify the public origin and proxy settings. |
+| HTTP 409 on save | Reread the record and reapply the intended change against its current version. Do not silently force an overwrite. |
+| Files missing or permission denied after moving | Verify the restored attachment volume, `STORAGE_PATH`, checksum and ownership/access for UID 10001. A database-only copy is insufficient. |
+| Old behavior after a release | Confirm the running container's image tag/digest. Publishing a release or restarting an old container does not update its image or environment. |

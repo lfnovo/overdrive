@@ -12,14 +12,19 @@ The library has process-global configuration. Overdrive permits one active `Data
 
 ## New installations
 
-Configure `.env` using `.env.example`, then provide `BOOTSTRAP_USER` and `BOOTSTRAP_PASS` through the environment:
+Configure `.env` using `.env.example`, including `BOOTSTRAP_USER` and `BOOTSTRAP_PASS`, then load it into the command environment:
 
 ```sh
 uv sync --locked
-PYTHONPATH=. uv run python scripts/bootstrap.py
+PYTHONPATH=. uv run python - <<'PY'
+import runpy
+from dotenv import load_dotenv
+load_dotenv(".env")
+runpy.run_path("scripts/bootstrap.py", run_name="__main__")
+PY
 ```
 
-Bootstrap provisions the namespace, database and database-scoped service user, then runs pending migrations using that service user. The app creates the initial administrator when it starts. Bootstrap does not reset credentials for a service user that already exists.
+Bootstrap provisions the namespace, database and database-scoped service user, then runs pending migrations using that service user. The app creates the initial administrator when it starts. Bootstrap does not reset credentials for a service user that already exists. If provisioning credentials are already supplied through environment variables, invoke `PYTHONPATH=. uv run python scripts/bootstrap.py` directly. Do not load dotenv files by sourcing them as shell scripts; the Python parser handles names containing spaces.
 
 ## Existing installations without migration tracking
 
@@ -57,7 +62,7 @@ Overdrive uses `AsyncMigrationRunner.run_up()` directly. Version 0.8.1 validates
 
 There is intentionally no down migration for the initial schema: dropping it would destroy data. Returning to an older application image does not reverse schema changes; recovery may require restoring the matching backup.
 
-The library’s dry-run currently wraps each file in a transaction, so files containing their own `BEGIN/COMMIT` cannot be validated that way ([upstream #37](https://github.com/lfnovo/surreal-basics/issues/37)). The Overdrive workflow tests migrations against disposable databases instead.
+The pinned library's dry-run wraps each file in a transaction, so files containing their own `BEGIN/COMMIT` cannot be validated that way ([upstream #37](https://github.com/lfnovo/surreal-basics/issues/37)). The Overdrive workflow tests migrations against disposable databases instead; recheck this constraint when upgrading the library.
 
 ## Validation
 

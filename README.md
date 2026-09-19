@@ -54,12 +54,15 @@ Use version **0.1.1 or newer** for MCP through a public domain. Version 0.1.0 co
 
 ## Documentation
 
+- [Starting a development or maintenance session](docs/session-guide.md)
+- [Architecture and product decisions](docs/architecture.md)
 - [Authentication and account recovery](docs/authentication.md)
 - [Using Overdrive](docs/usage.md)
 - [Configuration and installation](docs/installation.md)
 - [Portainer with an existing database](docs/portainer.md)
 - [Database connections and migrations](docs/database.md)
 - [Backup, restore and upgrades](docs/operations.md)
+- [Imports and legacy maintenance](docs/imports.md)
 - [Development and tests](docs/development.md)
 - [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Changelog](CHANGELOG.md)
 

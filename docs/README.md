@@ -1,5 +1,7 @@
 # Documentation
 
+- [New-session guide](session-guide.md): establish current state and continue without prior chat history.
+- [Architecture](architecture.md): domain model, shared permission boundary and product decisions.
 - [Authentication](authentication.md): local passwords, activation links, recovery and Google.
 - [Installation](installation.md): Compose, environment variables, Google identity and HTTPS.
 - [Portainer](portainer.md): app-only stack using an existing database and restored attachment volume.
@@ -7,6 +9,7 @@
 - [MCP](mcp.md): agent authorization, tools and safe updates.
 - [Database](database.md): connections, schema migrations and adoption of an existing database.
 - [Operations](operations.md): persistence, backup, restore and upgrades.
+- [Imports and legacy tools](imports.md): CSV, offline Pipedrive snapshots, file downloads and old data conversions.
 - [Development](development.md): local development, automated checks and release workflow.
 
 ## Current boundaries
