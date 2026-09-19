@@ -61,7 +61,7 @@ uv run pytest -q
 docker rm -f overdrive-test-db
 ```
 
-The fixture creates and migrates its own namespaces. See [test context](../tests/CLAUDE.md) for coverage and fixture constraints.
+The fixture creates and migrates its own namespaces. See [test context](../tests/AGENTS.md) for coverage and fixture constraints.
 
 CI also starts a fresh Compose stack with `DEV_LOGIN=false`, generates an activation link, and runs Playwright through activation, sign-in, password change/recovery, deal creation and inline editing. Browser scripts must only target disposable installations because they create and modify records. They are under `scripts/smoke_auth.cjs` and `scripts/smoke_browser.cjs`.
 

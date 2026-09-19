@@ -6,7 +6,7 @@ For bugs, open an issue with the version, reproduction steps, expected behavior 
 
 For a substantial feature or architecture change, start with an issue describing the problem and intended behavior. Small fixes can go straight to a pull request.
 
-Start with the [new-session guide](docs/session-guide.md) and follow the [development guide](docs/development.md). Coding assistants enter through [AGENTS.md](AGENTS.md) and the shared [CLAUDE.md](CLAUDE.md) context. Keep code, documentation and UI copy in English. Prefer focused changes that preserve the shared UI/MCP permissions model. Add meaningful tests for changed behavior, and update relevant documentation. Run `uv run ruff check overdrive tests scripts` and `uv run pytest -q` against a disposable SurrealDB 3 instance before submitting.
+Start with the [new-session guide](docs/session-guide.md) and follow the [development guide](docs/development.md). Coding assistants use [AGENTS.md](AGENTS.md) as the canonical project context and follow the scoped `AGENTS.md` guidance for each subsystem. Keep code, documentation and UI copy in English. Prefer focused changes that preserve the shared UI/MCP permissions model. Add meaningful tests for changed behavior, and update relevant documentation. Run `uv run ruff check overdrive tests scripts` and `uv run pytest -q` against a disposable SurrealDB 3 instance before submitting.
 
 Describe the concrete problem, resulting behavior and validation in the pull request. Include screenshots for visible interface changes, using fictional data. Do not include `.env`, database dumps, uploads or private company records.
 

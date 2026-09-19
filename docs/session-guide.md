@@ -4,7 +4,7 @@ This repository contains the product decisions, implementation map, runnable set
 
 ## Establish the current state
 
-1. Read [the root contributor context](../CLAUDE.md), [architecture](architecture.md) and the relevant guide from [the index](README.md).
+1. Read [the root contributor context](../AGENTS.md), [architecture](architecture.md) and the relevant guide from [the index](README.md).
 2. Inspect `git status --short --branch` and `git log -5 --oneline`. Preserve existing changes. Compare remote state before pushing; `origin/main` is only as current as the last fetch.
 3. Read `pyproject.toml`, `uv.lock`, `CHANGELOG.md` and `compose.yaml` for package/dependency versions and the default image. GitHub release/image state and the deployed image are separate facts; verify them when relevant.
 4. For a fresh clone, follow [installation](installation.md) or [development](development.md). Do not regenerate an existing `.env`.
@@ -27,8 +27,8 @@ The API endpoint, namespace/database and file directory must all refer to the in
 
 | Task | Read first | Verify |
 | --- | --- | --- |
-| Product/UI change | [Usage](usage.md), [template context](../overdrive/templates/CLAUDE.md) | Relevant route tests and browser behavior for interaction changes. |
-| Business logic or permissions | [Architecture](architecture.md), [application context](../overdrive/CLAUDE.md) | Regression across affected UI/API/MCP paths and access boundaries. |
+| Product/UI change | [Usage](usage.md), [template context](../overdrive/templates/AGENTS.md) | Relevant route tests and browser behavior for interaction changes. |
+| Business logic or permissions | [Architecture](architecture.md), [application context](../overdrive/AGENTS.md) | Regression across affected UI/API/MCP paths and access boundaries. |
 | Database/schema | [Database](database.md) | Fresh install and upgrade; no edits to applied migrations. |
 | Login or remote MCP | [Authentication](authentication.md), [MCP](mcp.md) | Actual external origin, OAuth consent, initialization, tool listing and a read-only call. |
 | Backup/import/restore | [Operations](operations.md), [imports](imports.md) | Correct target, records and file checksums; source data remains recoverable. |

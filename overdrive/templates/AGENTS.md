@@ -21,4 +21,4 @@ Routes and context come from `../app.py`; interactions live in `../static/app.js
 - Mutating forms carry CSRF, record version and idempotency key where required by their routes. Refresh versions after successful edits.
 - Use the existing Markdown filter and preview routes; do not render untrusted HTML or expose storage paths.
 - Keep URLs relative to the public origin. Absolute backend HTTP URLs break HTTPS session cookies behind a proxy.
-- UI tests are mapped in [tests guidance](../../tests/CLAUDE.md); asset build commands are in [development](../../docs/development.md).
+- UI tests are mapped in [tests guidance](../../tests/AGENTS.md); asset build commands are in [development](../../docs/development.md).

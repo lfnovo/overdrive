@@ -14,7 +14,7 @@ The same CRM service implements commercial behavior for browser forms, HTTP API 
 - `analytics.py`: metrics from observed history; missing imported history stays explicit.
 - `importer.py`, `pipedrive_import.py`, `material_migration.py`, `stage_migration.py`: import and legacy conversion logic, invoked through maintenance scripts.
 - `config.py`, `voice.py`: environment settings and session-stable decorative copy.
-- [templates/](templates/CLAUDE.md): UI composition and integration with handwritten JS/CSS in `static/`.
+- [templates/](templates/AGENTS.md): UI composition and integration with handwritten JS/CSS in `static/`.
 
 ## Patterns and traps
 
@@ -28,4 +28,4 @@ The same CRM service implements commercial behavior for browser forms, HTTP API 
 - Uploads are filesystem-backed, separate from metadata. Keep checksum validation and cleanup on failure. Preview/download access must pass deal authorization.
 - Do not add `credential`, `auth_record` or other authentication internals to `MODELS` or generic MCP CRUD.
 
-Follow [database migration rules](../docs/database.md) for schema changes and [tests guidance](../tests/CLAUDE.md) for regression coverage.
+Follow [database migration rules](../docs/database.md) for schema changes and [tests guidance](../tests/AGENTS.md) for regression coverage.
