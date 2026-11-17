@@ -1,0 +1,39 @@
+compose.yaml
+  s_66992bce0ec495::t_2a740879ab7ab9 36,48
+docs/portainer.md
+  s_66992bce0ec495::t_2a740879ab7ab9 12,71
+README.md
+  s_66992bce0ec495::t_2a740879ab7ab9 37
+docs/installation.md
+  s_66992bce0ec495::t_2a740879ab7ab9 38
+overdrive/auth.py
+  s_66992bce0ec495::t_060708374a924d 12-15,178,197-204
+pyproject.toml
+  s_66992bce0ec495::t_2a740879ab7ab9 3
+tests/test_oauth_mcp.py
+  s_66992bce0ec495::t_f501d136dbdf87 4,7-9,188,201-252
+docs/mcp.md
+  s_66992bce0ec495::t_2a740879ab7ab9 22
+CHANGELOG.md
+  s_66992bce0ec495::t_2a740879ab7ab9 3-10
+docs/authentication.md
+  s_66992bce0ec495::t_2a740879ab7ab9 45-46
+uv.lock
+  s_66992bce0ec495::t_44e54cf83c2428 1055
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c03e3d824c7322c7a7aee61cca07d6c4b2001768",
+  "prompts": {},
+  "sessions": {
+    "s_66992bce0ec495": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d27379c3-2440-4adc-970b-9b042a500ccf",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Luis Novo <lfnovo@gmail.com>"
+    }
+  }
+}
