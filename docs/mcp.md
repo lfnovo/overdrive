@@ -19,6 +19,7 @@ The agent's user signs in with a local password or Google and approves the conne
 | Login returns “This form has expired” | Open a fresh login page on the HTTPS domain, not the backend's HTTP IP address. Secure session cookies are required. |
 | OAuth succeeds, but MCP reports zero tools and the server logs HTTP 421 / `Invalid Host header` | Upgrade from 0.1.0 to 0.1.1 or newer. On current versions, verify that the request host matches `APP_URL` and that the proxy preserves it. |
 | HTTP 403 / `Invalid Origin header` | The client's Origin, when present, must match the origin in `APP_URL`. |
+| The client asks for authorization again after the computer sleeps, or when several sessions share one connection | Upgrade to 0.1.3 or newer. Earlier versions rejected a refresh token as soon as it had been exchanged once, so a lost response or a second session ended the connection. |
 | HTTP 401 | An unauthenticated request to `/mcp` normally returns 401 with OAuth discovery metadata. If it persists after authorization, reconnect the client and check the user's account and grant status. |
 
 After changing container environment variables or the image version, update the stack to recreate the container, then reconnect the MCP client. Restarting the existing container does not apply new environment values.

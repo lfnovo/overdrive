@@ -9,6 +9,10 @@ from mcp.shared.auth import OAuthClientInformationFull, OAuthToken
 from .database import ensure_record_id
 from .service import Actor, DomainError, now
 
+# A rotated refresh token stays usable for this long, so a client that never
+# received the response, or shares the grant across processes, can retry.
+REFRESH_GRACE = 30 * 60
+
 
 def hashed(value):
     return hashlib.sha256(value.encode()).hexdigest()
@@ -126,7 +130,6 @@ class OAuthProvider:
                 "last_used": now(),
                 "revoked": False,
                 "auth_epoch": epoch,
-                "generation": (old or {}).get("generation", 0) + 1,
             },
             30 * 86400,
         )
@@ -138,7 +141,6 @@ class OAuthProvider:
             "subject": subject,
             "grant": grant,
             "auth_epoch": epoch,
-            "generation": (old or {}).get("generation", 0) + 1,
         }
         await self.put(access, "access", common | {"expires_at": int(time.time()) + 3600}, 3600)
         await self.put(refresh, "refresh", common | {"expires_at": int(time.time()) + 30 * 86400}, 30 * 86400)
@@ -173,12 +175,7 @@ class OAuthProvider:
         if not data:
             return None
         grant = await self.load(data["grant"], "grant")
-        if (
-            not grant
-            or grant["revoked"]
-            or data.get("generation") != grant.get("generation")
-            or grant.get("auth_epoch", "") != await self.epoch(data["subject"])
-        ):
+        if not grant or grant["revoked"] or grant.get("auth_epoch", "") != await self.epoch(data["subject"]):
             return None
         try:
             await self.crm.user(Actor(data["subject"]))
@@ -197,7 +194,14 @@ class OAuthProvider:
             data = await self._valid(refresh_token.token, "refresh")
             if not data or data["client_id"] != client.client_id:
                 raise TokenError(error="invalid_grant")
-            await self.delete(refresh_token.token)
+            # The window starts at the first exchange and is never extended by retries.
+            await self.db.query(
+                "UPDATE $id SET expires_at = $until WHERE expires_at > $until;",
+                {
+                    "id": ensure_record_id("auth_record:" + hashed(refresh_token.token)),
+                    "until": int(time.time()) + REFRESH_GRACE,
+                },
+            )
             return await self._tokens(
                 data["subject"],
                 client.client_id,

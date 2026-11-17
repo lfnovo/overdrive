@@ -42,6 +42,8 @@ Passwords accept 15–128 characters, including spaces. Password managers, autof
 
 MCP uses its existing HTTPS OAuth/PKCE flow. The person signs in through the browser with an enabled method and approves the agent. The agent receives scoped tokens, never the person's password or activation link. Recovery and password changes invalidate access tokens, refresh tokens, pending authorization codes, and issued file-transfer tickets for that user. Reconnect the agent afterward.
 
+Access tokens last one hour and refresh tokens 30 days, renewed on each use. A refresh token that has been exchanged remains usable for 30 minutes so a client can retry a lost response; revocation is not delayed by this window.
+
 ## Security and operations
 
 - Password hashes use Argon2id (64 MiB, three iterations, one lane) in a separate `credential` table, inaccessible through CRM CRUD and MCP tools.
