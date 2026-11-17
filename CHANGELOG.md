@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3
+
+- Fix MCP clients losing their connection and asking for authorization again after the computer slept, the network dropped during a token refresh, or several sessions shared one connection. A refresh token that has already been exchanged now remains usable for 30 minutes, so a client that never received the response can retry.
+- Refreshing no longer invalidates the access token issued before it. That token remains valid until its own one-hour expiry, so other sessions using the same connection keep working.
+- Revoking a connection, changing or recovering a password, and deactivating a user still invalidate every token immediately.
+
+No database migrations or credential changes are required for this update. Clients that already lost their connection must authorize once more after upgrading.
+
 ## 0.1.2
 
 - My tasks now excludes tasks on won, lost and archived deals, in both Pending and Completed views. The same filter applies to the MCP `my_tasks` tool and API task listings with `mine=true`, before pagination.

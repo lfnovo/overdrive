@@ -1,7 +1,11 @@
 import base64
 import hashlib
 import re
+import time
 from urllib.parse import parse_qs, urlparse
+
+from overdrive.auth import REFRESH_GRACE, hashed
+from overdrive.database import ensure_record_id
 
 
 async def login(client):
@@ -181,12 +185,7 @@ async def test_real_oauth_routes_and_mcp_transport(system):
         data={"grant_type": "refresh_token", "client_id": client_id, "refresh_token": token["refresh_token"]},
     )
     assert refresh.status_code == 200, refresh.text
-    old_refresh = await c.post(
-        "/token",
-        data={"grant_type": "refresh_token", "client_id": client_id, "refresh_token": token["refresh_token"]},
-    )
-    assert old_refresh.status_code == 400, old_refresh.text
-    # UI revocation invalidates original and renewed access tokens in this grant.
+    # UI revocation invalidates original and renewed tokens in this grant.
     connections = await app.state.provider.connections(
         __import__("overdrive.service", fromlist=["Actor"]).Actor("user:initial_admin")
     )
@@ -199,3 +198,55 @@ async def test_real_oauth_routes_and_mcp_transport(system):
             json={"jsonrpc": "2.0", "id": 4, "method": "tools/list"},
         )
         assert denied.status_code == 401, denied.text
+    for value in [token["refresh_token"], refresh.json()["refresh_token"]]:
+        denied = await c.post(
+            "/token", data={"grant_type": "refresh_token", "client_id": client_id, "refresh_token": value}
+        )
+        assert denied.status_code == 400, denied.text
+
+
+async def test_rotated_refresh_token_survives_a_lost_response(system):
+    app, c = system
+    client_id, token = await authorize(c, await login(c))
+    record = "auth_record:" + hashed(token["refresh_token"])
+
+    async def refresh(value):
+        return await c.post(
+            "/token", data={"grant_type": "refresh_token", "client_id": client_id, "refresh_token": value}
+        )
+
+    async def tools(access):
+        return await c.post(
+            "/mcp",
+            headers={
+                "Authorization": "Bearer " + access,
+                "Accept": "application/json, text/event-stream",
+                "MCP-Protocol-Version": "2025-11-25",
+            },
+            json={"jsonrpc": "2.0", "id": 1, "method": "tools/list"},
+        )
+
+    first = await refresh(token["refresh_token"])
+    assert first.status_code == 200, first.text
+    # Processes sharing the grant keep working with the access token they already hold.
+    for access in [token["access_token"], first.json()["access_token"]]:
+        assert (await tools(access)).status_code == 200
+    deadline = (await app.state.db.get(record))["expires_at"]
+    assert deadline <= time.time() + REFRESH_GRACE
+
+    # The client never stored the first response and retries with the token it still has.
+    retry = await refresh(token["refresh_token"])
+    assert retry.status_code == 200, retry.text
+    assert retry.json()["refresh_token"] != first.json()["refresh_token"]
+    assert (await tools(retry.json()["access_token"])).status_code == 200
+    assert (await app.state.db.get(record))["expires_at"] == deadline
+
+    await app.state.db.query(
+        "UPDATE $id SET expires_at = $at;", {"id": ensure_record_id(record), "at": int(time.time()) - 1}
+    )
+    late = await refresh(token["refresh_token"])
+    assert late.status_code == 400, late.text
+    assert late.json()["error"] == "invalid_grant"
+    # Tokens issued inside the window are not affected by its end.
+    for value in [first.json()["refresh_token"], retry.json()["refresh_token"]]:
+        assert (await refresh(value)).status_code == 200
