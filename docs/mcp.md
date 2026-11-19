@@ -33,12 +33,22 @@ After changing container environment variables or the image version, update the 
 | `create_deal`, `update_record` | Create, edit, archive and change deal outcomes. |
 | `create_contact`, `create_organization`, `link_contact` | Manage deal relationships. |
 | `create_task`, `my_tasks` | Assign next steps and retrieve personal work. |
+| `delete_task`, `restore_task` | Discard tasks that are no longer needed, or bring them back. |
 | `add_note` | Append dated Markdown context. |
 | `add_link`, `attachment_transfer`, `delete_attachment` | Store and retrieve materials. |
 | `pipeline_analytics` | Metrics restricted to the user's accessible deals. |
 | `transfer_deal`, `admin_save` | Administrative transfers and configuration. |
 
 `my_tasks` returns only the user's tasks on accessible, open, non-archived deals, including when `completed=true`. For historical tasks on a won, lost or archived deal, use `list_records(entity="task", deal_id="deal:...")`. Closing or archiving a deal does not delete or automatically complete its tasks.
+
+## Completing versus deleting tasks
+
+Complete a task with `update_record(changes={"done": true})` only when the work was executed. When a task is obsolete, for example a follow-up on a deal that was lost, use `delete_task` instead, so discarded work is not recorded as done.
+
+- A deleted task disappears from pending and completed lists, overdue groups, `my_tasks` and the board's next step. It is never counted as completed and keeps its `done` value.
+- Deletion is logical. The record and its history remain; `list_records(entity="task", deal_id="deal:...", deleted=true)` finds deleted tasks, and `restore_task` brings one back. A deleted task cannot be edited until it is restored.
+- Both tools follow the usual safeguards: deal access, `expected_version`, a required `idempotency_key` that is safe to retry, and `task.delete`/`task.restore` audit events on the deal.
+- Deleting the primary task of a deal removes its primary flag, so it does not return as the next step when restored. Pass `next_primary_task_id` with another pending task on the same deal to promote it in the same operation, or create the next step with `create_task`. Without a replacement, the deal has no primary task and the board shows its earliest pending task, or prompts for a next step when none is left.
 
 ## Editing safely
 

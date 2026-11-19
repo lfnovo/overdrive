@@ -1,0 +1,5 @@
+-- Tasks can be discarded without being completed. Deletion is logical and restorable.
+BEGIN TRANSACTION;
+DEFINE FIELD IF NOT EXISTS deleted ON task TYPE bool DEFAULT false;
+UPDATE task SET deleted = false WHERE deleted = NONE;
+COMMIT TRANSACTION;

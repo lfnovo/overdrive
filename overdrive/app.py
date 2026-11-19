@@ -19,7 +19,7 @@ from .auth import OAuthProvider
 from .config import Settings
 from .database import Database, ensure_record_id
 from .mcp_server import create_mcp
-from .models import MODELS, SaveEnvelope
+from .models import MODELS, SaveEnvelope, TaskDeletion
 from .service import CRM, Actor, DomainError
 from .stages import STAGES
 from .storage import LocalStorage
@@ -140,6 +140,8 @@ def create_app(settings=None):
         "deal.transfer": "Business unit transferred",
         "task.create": "Task added",
         "task.update": "Task updated",
+        "task.delete": "Task deleted",
+        "task.restore": "Task restored",
         "note.create": "Note added",
         "note.update": "Note revised",
         "proposal_version.create": "Legacy proposal version added",
@@ -1110,6 +1112,7 @@ def create_app(settings=None):
         mine: bool = False,
         done: bool | None = None,
         deprecated: bool | None = None,
+        deleted: bool = False,
         archived: bool = False,
         offset: int = 0,
         limit: int = 50,
@@ -1124,9 +1127,31 @@ def create_app(settings=None):
             mine=mine,
             done=done,
             deprecated=deprecated,
+            deleted=deleted,
             archived=archived,
             offset=offset,
             limit=limit,
+        )
+
+    @app.post("/api/tasks/{id}/delete")
+    async def api_delete_task(request: Request, id: str, body: TaskDeletion):
+        return await crm.delete_task(
+            await actor(request, True),
+            id,
+            body.version,
+            key=request.headers.get("idempotency-key", ""),
+            next_primary=body.next_primary,
+        )
+
+    @app.post("/api/tasks/{id}/restore")
+    async def api_restore_task(request: Request, id: str, body: TaskDeletion):
+        return await crm.delete_task(
+            await actor(request, True),
+            id,
+            body.version,
+            key=request.headers.get("idempotency-key", ""),
+            restore=True,
+            next_primary=body.next_primary,
         )
 
     @app.get("/api/{entity}/{id}")

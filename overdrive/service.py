@@ -79,6 +79,7 @@ class CRM:
         mine=False,
         done=None,
         deprecated=None,
+        deleted=False,
         offset=0,
         limit=100,
     ):
@@ -131,6 +132,10 @@ class CRM:
         if table == "task" and done is not None:
             params["done"] = done
             clauses.append("done = $done")
+        if table == "task" and deleted is not None:
+            # Deleted tasks are discarded work: hidden from pending, overdue and next-step views.
+            params["deleted"] = deleted
+            clauses.append("deleted = $deleted")
         sql = f"SELECT * FROM {table} WHERE " + " AND ".join(f"({c})" for c in clauses)
         rows = await self.db.rows(sql + " ORDER BY created_at DESC LIMIT $limit START $offset;", params)
         if table == "user":
@@ -179,7 +184,7 @@ class CRM:
         user = await self.user(actor)
         sql, params = ["BEGIN TRANSACTION;"], {}
         first_result = None
-        for index, (id, before, after) in enumerate(changes):
+        for index, (id, before, after, *override) in enumerate(changes):
             params[f"id{index}"] = ensure_record_id(id)
             deleting = after is None
             after = {
@@ -226,7 +231,7 @@ class CRM:
                 "updated_at": now(),
                 "target": id,
                 "deal": audit_deal or (id if id.startswith("deal:") else after.get("deal")),
-                "action": action,
+                "action": override[0] if override else action,
                 "actor": actor.id,
                 "actor_name": user["name"],
                 "channel": actor.channel,
@@ -320,6 +325,8 @@ class CRM:
                 raise DomainError(
                     "; ".join(f"{'.'.join(map(str, e['loc']))}: {e['msg']}" for e in exc.errors())
                 ) from exc
+            if before and table == "task" and before.get("deleted"):
+                raise DomainError("Restore this task before editing it.", 409, "deleted")
             if before and table in {"task", "note", "attachment"} and parsed["deal"] != before["deal"]:
                 raise DomainError("The linked deal cannot be changed.")
             deal = None
@@ -382,7 +389,8 @@ class CRM:
                         "SELECT * FROM deal WHERE owner = $user;", {"user": ensure_record_id(id)}
                     )
                     own_tasks = await self.db.rows(
-                        "SELECT * FROM task WHERE owner = $user;", {"user": ensure_record_id(id)}
+                        "SELECT * FROM task WHERE owner = $user AND deleted = false;",
+                        {"user": ensure_record_id(id)},
                     )
                     for row in own_deals + own_tasks:
                         d = row if row["id"].startswith("deal:") else await self.db.get(row["deal"])
@@ -390,6 +398,8 @@ class CRM:
                             raise DomainError("Reassign this owner’s deals and tasks before removing access.")
             record_id = id or new_id(table)
             after = (before or {}) | parsed
+            if table == "task":
+                after.setdefault("deleted", False)
             changes = [(record_id, before, after)]
             if table == "task" and parsed["primary"] and not parsed["done"]:
                 others = await self.db.rows(
@@ -410,6 +420,58 @@ class CRM:
                 key=key,
                 payload=payload,
                 audit_deal=deal["id"] if deal and table not in {"contact", "organization"} else None,
+            )
+
+    async def delete_task(self, actor, id, version, *, key="", restore=False, next_primary=None):
+        """Discard (or restore) a task without completing it. Deletion is logical and audited."""
+        if not key:
+            raise DomainError("Provide an idempotency key.")
+        if restore and next_primary:
+            raise DomainError("A next primary task can only be chosen when deleting.")
+        action = "task.restore" if restore else "task.delete"
+        payload = {"id": id, "version": version, "next_primary": next_primary}
+        async with self.db.lock:
+            await self.user(actor)
+            replay = await self._replay(actor, action, key, payload)
+            if replay:
+                return replay
+            task = await self.get(actor, id, "task")
+            if task["version"] != version:
+                raise DomainError("This task changed. Reload before saving.", 409, "conflict")
+            if bool(task.get("deleted")) != restore:
+                state = "active" if restore else "deleted"
+                raise DomainError(f"This task is already {state}.", 409, "conflict")
+            deal = await self.get(actor, task["deal"], "deal")
+            after = task | {"deleted": not restore}
+            if restore:
+                # The owner may have lost access while the task was deleted.
+                await self._owner(task["owner"], deal.get("unit"))
+            else:
+                # A deleted task is never the next step; restoring does not displace the current one.
+                after["primary"] = False
+            changes = [(task["id"], task, after)]
+            if next_primary:
+                nxt = await self.get(actor, next_primary, "task")
+                if (
+                    nxt["id"] == task["id"]
+                    or nxt["deal"] != task["deal"]
+                    or nxt["done"]
+                    or nxt.get("deleted")
+                ):
+                    raise DomainError("The next primary task must be another pending task on the same deal.")
+                others = await self.db.rows(
+                    "SELECT * FROM task WHERE deal = $deal AND primary = true AND done = false;",
+                    {"deal": ensure_record_id(task["deal"])},
+                )
+                changes.extend(
+                    (r["id"], r, r | {"primary": False}, "task.update")
+                    for r in others
+                    if r["id"] not in {task["id"], nxt["id"]}
+                )
+                if not nxt["primary"]:
+                    changes.append((nxt["id"], nxt, nxt | {"primary": True}, "task.update"))
+            return await self._commit(
+                actor, changes, action, audit_deal=task["deal"], key=key, payload=payload
             )
 
     async def link(self, actor, deal_id, contact_id, *, remove=False, key=""):

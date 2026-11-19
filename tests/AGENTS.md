@@ -17,7 +17,7 @@ Tests exercise real SurrealDB behavior and the application through an in-process
 | Shared access and mutations | `test_journey.py`, `test_security.py`, `test_transfer.py` |
 | Passwords and development identity | `test_local_auth.py`, `test_dev_identity.py` |
 | MCP/OAuth and public origins | `test_oauth_mcp.py`, `test_mcp_public_origin.py` |
-| Task inbox and deal outcomes | `test_my_tasks.py`, `test_deal_status.py`, `test_stages.py` |
+| Task inbox, task deletion and deal outcomes | `test_my_tasks.py`, `test_task_deletion.py`, `test_deal_status.py`, `test_stages.py` |
 | UI contracts and copy | `test_contextual_editing.py`, `test_ui_voice.py` |
 | Files, previews and backup | `test_materials.py`, `test_preview.py`, `test_backup.py` |
 | Database lifecycle | `test_migrations.py`, `test_database_refresh.py` |
