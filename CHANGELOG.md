@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Add MCP tools `delete_task` and `restore_task` so obsolete tasks can be discarded without marking them as completed. Deleted tasks leave pending, completed, overdue and next-step views, are excluded from `my_tasks`, and can be found with `list_records(deleted=true)` and restored.
+- Deletion respects deal access, record versions and idempotency keys, and records `task.delete`/`task.restore` audit events. Deleting a primary task can promote another pending task as the next step in the same operation.
+- The HTTP API exposes the same behavior at `POST /api/tasks/{id}/delete` and `POST /api/tasks/{id}/restore`, and task listings accept `deleted=true`.
+
+Requires database migration 003, which adds the `deleted` field to tasks and marks existing tasks as not deleted. Run `scripts/migrate.py up` before starting the new version.
+
 ## 0.1.3
 
 - Fix MCP clients losing their connection and asking for authorization again after the computer slept, the network dropped during a token refresh, or several sessions shared one connection. A refresh token that has already been exchanged now remains usable for 30 minutes, so a client that never received the response can retry.

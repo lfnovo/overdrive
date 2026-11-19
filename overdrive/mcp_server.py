@@ -93,10 +93,12 @@ def create_mcp(crm, provider, settings):
         owner_id: str = "",
         archived: bool = False,
         deprecated: bool | None = None,
+        deleted: bool = False,
         offset: int = 0,
         limit: int = 50,
     ) -> list[dict]:
-        """Search accessible records with pagination. History, files and links accept deal_id."""
+        """Search accessible records with pagination. History, files and links accept deal_id.
+        Tasks exclude deleted ones; pass deleted=true to find deleted tasks to restore."""
         return await crm.listing(
             actor(),
             entity,
@@ -106,6 +108,7 @@ def create_mcp(crm, provider, settings):
             owner=owner_id,
             archived=archived,
             deprecated=deprecated,
+            deleted=deleted,
             offset=offset,
             limit=limit,
         )
@@ -174,6 +177,27 @@ def create_mcp(crm, provider, settings):
         return await crm.listing(
             actor(), "task", mine=True, done=completed, unit=unit_id, offset=offset, limit=limit
         )
+
+    @tool()
+    async def delete_task(
+        task_id: str,
+        expected_version: int,
+        idempotency_key: str,
+        next_primary_task_id: str | None = None,
+    ) -> dict:
+        """Discard a task that is no longer needed, without marking it done. Use update_record(done=true) only for work that was actually executed.
+        Deleted tasks leave pending lists, overdue groups, next-step selection and my_tasks; they are not counted as completed.
+        Deletion is logical, audited and reversible with restore_task. A deleted primary task stops being primary:
+        pass next_primary_task_id (another pending task on the same deal) to promote a new next step atomically, or create one with create_task.
+        Retrying the same key is safe."""
+        return await crm.delete_task(
+            actor(), task_id, expected_version, key=idempotency_key, next_primary=next_primary_task_id
+        )
+
+    @tool()
+    async def restore_task(task_id: str, expected_version: int, idempotency_key: str) -> dict:
+        """Restore a deleted task to its previous state, except that it returns as non-primary. Find deleted tasks with list_records(entity="task", deal_id=..., deleted=true)."""
+        return await crm.delete_task(actor(), task_id, expected_version, key=idempotency_key, restore=True)
 
     @tool()
     async def add_note(data: Note, idempotency_key: str) -> dict:

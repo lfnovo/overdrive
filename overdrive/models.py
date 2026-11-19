@@ -136,3 +136,8 @@ class SaveEnvelope(Model):
     data: dict
     version: int | None = Field(default=None, ge=1)
     context_deal: str | None = None
+
+
+class TaskDeletion(Model):
+    version: int = Field(ge=1)
+    next_primary: str | None = None

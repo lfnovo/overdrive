@@ -13,7 +13,7 @@ async def test_schema_created_and_repeat_is_noop(system):
     app, _ = system
     db = app.state.db
     status = await migrations.migrate(db, "status")
-    assert status["current_version"] == 2
+    assert status["current_version"] == 3
     assert status["pending"] == []
     assert await migrations.migrate(db) == []
     await migrations.verify_initial_schema(db)
@@ -33,7 +33,7 @@ async def test_legacy_baseline_preserves_records_and_refuses_schema_drift(system
     assert await crm.get(actor, deal["id"]) == deal
     assert await crm.history(actor, deal["id"]) == history
     assert await migrations.migrate(db, "baseline") == []
-    assert [m.version for m in await migrations.migrate(db)] == [2]
+    assert [m.version for m in await migrations.migrate(db)] == [2, 3]
     await db.query("REMOVE FIELD expected_close ON deal;")
     with pytest.raises(RuntimeError, match="Schema differs"):
         await migrations.migrate(db, "baseline")
@@ -53,15 +53,16 @@ async def test_failed_migration_is_not_recorded_and_can_be_retried(
     db = app.state.db
     shutil.copy(migrations.MIGRATIONS / "001_initial_schema.surrealql", tmp_path)
     shutil.copy(migrations.MIGRATIONS / "002_local_auth.surrealql", tmp_path)
-    change = tmp_path / "003_example.surrealql"
+    shutil.copy(migrations.MIGRATIONS / "003_task_deletion.surrealql", tmp_path)
+    change = tmp_path / "004_example.surrealql"
     change.write_text(failing_sql)
     monkeypatch.setattr(migrations, "MIGRATIONS", tmp_path)
     with pytest.raises(SurrealDBMigrationError, match="stop"):
         await migrations.migrate(db)
     assert "migration_test" not in (await db.rows("INFO FOR DB;"))["tables"]
-    assert (await AsyncMigrationRunner(tmp_path).status())["current_version"] == 2
+    assert (await AsyncMigrationRunner(tmp_path).status())["current_version"] == 3
     change.write_text("DEFINE TABLE IF NOT EXISTS migration_test SCHEMAFULL;")
-    assert [m.version for m in await migrations.migrate(db)] == [3]
+    assert [m.version for m in await migrations.migrate(db)] == [4]
     assert await migrations.migrate(db) == []
 
 
@@ -76,3 +77,18 @@ async def test_adapter_retains_all_results_and_rejects_second_owner(system):
         await second.connect()
     await second.close()
     assert await db.rows("RETURN 3;") == 3
+
+
+async def test_task_deletion_migration_backfills_existing_tasks(system):
+    app, _ = system
+    db, crm = app.state.db, app.state.crm
+    actor = Actor("user:initial_admin")
+    deal = await crm.save(actor, "deal", {"title": "Legacy tasks"})
+    task = await crm.save(actor, "task", {"deal": deal["id"], "title": "Legacy", "owner": actor.id})
+    # Simulate an installation at version 2: the field and its values do not exist yet.
+    await db.query("REMOVE FIELD deleted ON task; UPDATE task UNSET deleted;")
+    await db.query("DELETE _sbl_migrations WHERE version = 3;")
+    assert await db.rows("SELECT VALUE deleted FROM task;") == [None]
+    assert [m.version for m in await migrations.migrate(db)] == [3]
+    assert (await crm.get(actor, task["id"]))["deleted"] is False
+    assert [t["id"] for t in await crm.listing(actor, "task", deal=deal["id"])] == [task["id"]]
